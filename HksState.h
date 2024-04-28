@@ -2,6 +2,7 @@
 #include <string>
 #include "ProcessData.h"
 #include "Logger.h"
+#include "TargetNpcInfoPtr.h"
 
 intptr_t getProcessBase();
 
@@ -9,14 +10,16 @@ enum EnvId
 {
     TRAVERSE_POINTER_CHAIN = 10000,
     EXECUTE_FUNCTION = 10002, 
-    GET_EVENT_FLAG = 10003
+    GET_EVENT_FLAG = 10003,
+    TARGET_NPC = 10004,
 };
 enum ActId 
 { 
     WRITE_POINTER_CHAIN = 10000, 
     DEBUG_PRINT = 10001, 
     UPDATE_MAGICID = 10002, 
-    SET_EVENT_FLAG = 10003
+    SET_EVENT_FLAG = 10003,
+    TELEPORT_TO_TARGET = 10004
 };
 enum PointerBaseType { GAME = 0, CHR_INS = 1};
 enum WritePointerChainType 
@@ -120,7 +123,23 @@ int newEnvFunc(void** chrInsPtr, int envId, HksState* hksState)
         return getEventFlag(*VirtualMemoryFlag, hks_luaL_checkint(hksState, 2));
         break;
     }
+    case TARGET_NPC:
+	    {
+		    if (!hksHasParamInt(hksState, 2))
+			    return INVALID;
+		    int positionIndex = hks_luaL_checkint(hksState, 2);
 
+            printf("TARGET BASE = %p, ", targetNpcInfo);
+			printf("TARGET BASE X = %p\n", &(targetNpcInfo->x));
+            printf("TARGET LOCATION = (%f, %f, %f)\n", targetNpcInfo->x, targetNpcInfo -> y, targetNpcInfo -> z);
+            switch (positionIndex)
+		    {
+		    case 1: return *((intptr_t*)&(targetNpcInfo->x)) & 0xFFFFFFFF;
+		    case 2: return *((intptr_t*)&(targetNpcInfo->y)) & 0xFFFFFFFF;
+		    case 3: return *((intptr_t*)&(targetNpcInfo->z)) & 0xFFFFFFFF;
+		    default: return INVALID;
+		    }
+	    }
     }
 
     return 0;
@@ -246,6 +265,24 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
         setEventFlag(*VirtualMemoryFlag, hks_luaL_checkint(hksState, 2), hks_luaL_checkint(hksState, 3));
         break;
     }
+    case TELEPORT_TO_TARGET:
+	    {
+		    intptr_t chrIns = (intptr_t)*chrInsPtr;
+		    intptr_t address = getBaseFromType((PointerBaseType)hks_luaL_checkint(hksState, 2), hksState, chrIns);
+
+            float* playerX_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x70);
+            float* playerY_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x74);
+            float* playerZ_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x78);
+            targetNpcInfo->playerX = *playerX_ptr;
+            targetNpcInfo->playerY = *playerY_ptr;
+            targetNpcInfo->playerZ = *playerZ_ptr;
+
+            if (targetNpcInfo->x == 42 && targetNpcInfo->y == 42 && targetNpcInfo->z == 42) return;
+            printf("PLAYER X ADDRESS= %p\n", &(targetNpcInfo->playerX));
+            printf("PLAYER LOCATION = (%f, %f, %f)\n", targetNpcInfo->playerX, targetNpcInfo->playerY, targetNpcInfo->playerZ);
+            memcpy(playerX_ptr, &(targetNpcInfo->x), 12);
+            // targetNpcInfo->teleportTo();
+	    }
     }
 }
 

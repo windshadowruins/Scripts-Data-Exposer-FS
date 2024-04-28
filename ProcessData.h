@@ -92,3 +92,5 @@ void** VirtualMemoryFlag;
 bool (*getEventFlag)(void* virtualMemoryFlag, unsigned int flagId);
 
 void (*setEventFlag)(void* virtualMemoryFlag, unsigned int flagId, int val);
+
+void* targetStructureMoveInstruction;
