@@ -267,7 +267,8 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
     }
     case TELEPORT_TO_TARGET:
 	    {
-		    intptr_t chrIns = (intptr_t)*chrInsPtr;
+			if (!hksHasParamInt(hksState, 2)) return;
+    		intptr_t chrIns = (intptr_t)*chrInsPtr;
 		    intptr_t address = getBaseFromType((PointerBaseType)hks_luaL_checkint(hksState, 2), hksState, chrIns);
 
             float* playerX_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x70);
@@ -280,27 +281,15 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
             if (targetNpcInfo->x == 42 && targetNpcInfo->y == 42 && targetNpcInfo->z == 42) return;
             printf("PLAYER X ADDRESS= %p\n", &(targetNpcInfo->playerX));
             printf("PLAYER LOCATION = (%f, %f, %f)\n", targetNpcInfo->playerX, targetNpcInfo->playerY, targetNpcInfo->playerZ);
-            
-            targetNpcInfo->teleportTo(playerX_ptr);
+
+            int teleportType = hks_luaL_checkint(hksState, 2);
+			switch (teleportType)
+			{
+			case 1: memcpy(playerX_ptr, &(targetNpcInfo->x), 12);
+			case 2: targetNpcInfo->teleportTo(playerX_ptr);
+            default:;
+			}
 	    }
-    // case TELEPORT_TO_TARGET:
-	   //  {
-		  //   intptr_t chrIns = (intptr_t)*chrInsPtr;
-		  //   intptr_t address = getBaseFromType((PointerBaseType)hks_luaL_checkint(hksState, 2), hksState, chrIns);
-    //
-    //         float* playerX_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x70);
-    //         float* playerY_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x74);
-    //         float* playerZ_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x78);
-    //         targetNpcInfo->playerX = *playerX_ptr;
-    //         targetNpcInfo->playerY = *playerY_ptr;
-    //         targetNpcInfo->playerZ = *playerZ_ptr;
-    //
-    //         if (targetNpcInfo->x == 42 && targetNpcInfo->y == 42 && targetNpcInfo->z == 42) return;
-    //         printf("PLAYER X ADDRESS= %p\n", &(targetNpcInfo->playerX));
-    //         printf("PLAYER LOCATION = (%f, %f, %f)\n", targetNpcInfo->playerX, targetNpcInfo->playerY, targetNpcInfo->playerZ);
-    //         memcpy(playerX_ptr, &(targetNpcInfo->x), 12);
-    //         // targetNpcInfo->teleportTo();
-	   //  }
     }
 }
 
