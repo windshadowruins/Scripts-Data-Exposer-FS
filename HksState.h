@@ -285,8 +285,15 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
             int teleportType = hks_luaL_checkint(hksState, 2);
 			switch (teleportType)
 			{
-			case 1: memcpy(playerX_ptr, &(targetNpcInfo->x), 12);
-			case 2: targetNpcInfo->teleportTo(playerX_ptr);
+			// case 1: 
+   //              targetNpcInfo -> speedUpEnemy();
+   //              break;
+			case 1: 
+                memcpy(playerX_ptr, &(targetNpcInfo->x), 12);
+                break;
+			case 2: 
+                targetNpcInfo->teleportTo(playerX_ptr);
+                break;
             default:;
 			}
 	    }
