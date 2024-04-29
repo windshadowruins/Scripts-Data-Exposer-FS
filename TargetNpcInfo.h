@@ -16,10 +16,10 @@ struct TargetNpcInfo
 		return { x, y, z };
 	}
 
-	void teleportTo()
+	void teleportTo(float* playerX_ptr)
 	{
-		if (x == 42 && y == 42 && z == 42)
-			return;
+		float* targetX_ptr = (float*)(*(long long*)(*(long long*)(baseHandle + 0x190) + 0x68) + 0x70);
+		memcpy(targetX_ptr, playerX_ptr, 12);
 
 	}
 };
