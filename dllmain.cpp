@@ -9,8 +9,8 @@
 #include "Logger.h"
 #include "ProcessData.h"
 #include "AOBScan.h"
-#include "testheader.h"
 #include "TargetNpcInfoPtr.h"
+#include "TargetNpcPatch.h"
 
 #if _WIN64
 #pragma comment(lib, "libMinHook-x64-v141-md.lib")
@@ -19,39 +19,6 @@
 #endif
 
 #define OPEN_CONSOLE_ON_START 1
-
-
-extern "C"
-{
-    extern __declspec(dllexport) long long permanentTargetStructurePointer;
-}
-
-extern "C" void decorator(void);
-
-extern "C" {
-    long long coordinatesPtr = 0;
-
-    void setStructure(long long value) {
-        float* targetX_ptr = (float*)(*(long long*)(*(long long*)(value + 0x190) + 0x68) + 0x70);
-
-    	try
-        {
-            float x = *targetX_ptr;
-            float y = *(targetX_ptr + 1);
-            float z = *(targetX_ptr + 2);
-            targetNpcInfo -> baseHandle = value;
-            targetNpcInfo -> x = x;
-            targetNpcInfo -> y = y;
-            targetNpcInfo -> z = z;
-            float cc = 0;
-        }
-        catch (char* e)
-        {
-            printf("Exception Caught: %s\n", e);
-        }
-        coordinatesPtr = value;
-    }
-}
 
 static inline void** getAbsoluteAddressBase(intptr_t base, intptr_t offset)
 {
@@ -147,14 +114,12 @@ bool createHook(LPVOID pTarget, LPVOID pDetour, LPVOID* ppOriginal)
     return true;
 }
 
-void initHooks() 
+void initTargetHooks()
 {
-    createHook(replacedHksEnv, &envHookFunc, (void**)&hksEnv);
-    createHook(replacedHksAct, &actHookFunc, (void**)&hksAct);
-    const unsigned char targetStructureAOB[] = { 0x48, 0x8B, 0x48, 0x08, 0x49, 0x89, 0x8D };
+	const unsigned char targetStructureAOB[] = { 0x48, 0x8B, 0x48, 0x08, 0x49, 0x89, 0x8D };
     const char* targetStructureMask = ".......";
     // 48 8B 48 08 49 89 8D
-    // for Cheat Engine scanning
+    // for CE scanning
     Logger::log("About to scan for target structure...");
     targetStructureMoveInstruction = AOBScanAddress(targetStructureAOB, targetStructureMask);
 
@@ -174,7 +139,8 @@ void initHooks()
     VirtualProtect(jumpAddress, sizeof(asmCode), PAGE_EXECUTE_READWRITE, &oldProtect);
 
     unsigned char* masmRoutineAddress = reinterpret_cast<unsigned char*>(allocatedMemory);
-    unsigned char* start_of_next_instruction = jumpAddress + 5;
+
+	unsigned char* start_of_next_instruction = jumpAddress + SIZE_OF_CALL_INSTRUCTION;
     int relativeOffset = reinterpret_cast<uintptr_t>(masmRoutineAddress) - reinterpret_cast<uintptr_t>(start_of_next_instruction);
     printf("Pointer to Jump is %p \n", jumpAddress);
     printf("Pointer to start of after-Jump instruction is %p \n", (void*) start_of_next_instruction);
@@ -184,7 +150,7 @@ void initHooks()
 
 
     // Patch the offset into the call instruction
-	for (int i = 0; i <= 5; ++i) {
+	for (int i = 0; i <= ADDRESS_SIZE_IN_BYTES - 1; ++i) {
         asmCode[i + 2] = (reinterpret_cast<uintptr_t>(allocatedMemory) >> (i * 8)) & 0xFF;
     }
 
@@ -201,11 +167,20 @@ void initHooks()
     VirtualProtect(jumpAddress, sizeof(asmCode), oldProtect, &oldProtect);
 
     targetNpcInfo = new TargetNpcInfo;
-    targetNpcInfo -> x = 42;
-    targetNpcInfo -> y = 42;
-    targetNpcInfo -> z = 42;
+    targetNpcInfo -> x = DEFAULT_COORDINATES;
+    targetNpcInfo -> y = DEFAULT_COORDINATES;
+    targetNpcInfo -> z = DEFAULT_COORDINATES;
 
     std::printf("Target NPC info at : %p\n", targetNpcInfo);
+	
+}
+
+void initHooks() 
+{
+    createHook(replacedHksEnv, &envHookFunc, (void**)&hksEnv);
+    createHook(replacedHksAct, &actHookFunc, (void**)&hksAct);
+
+    initTargetHooks();
 
     MH_EnableHook(NULL);
 }

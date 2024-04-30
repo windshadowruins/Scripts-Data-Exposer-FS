@@ -33,6 +33,12 @@ enum WritePointerChainType
     SET_FLOAT = 6,
 };
 
+enum TARGET_NPC_POSITION
+{
+    TARGET_NPC_X = 1,
+    TARGET_NPC_Y = 2,
+    TARGET_NPC_Z = 3,
+};
 
 //hks functions return invalid when something is wrong, so we'll do the same with our custom funcs
 constexpr int INVALID = -1;
@@ -134,9 +140,9 @@ int newEnvFunc(void** chrInsPtr, int envId, HksState* hksState)
             printf("TARGET LOCATION = (%f, %f, %f)\n", targetNpcInfo->x, targetNpcInfo -> y, targetNpcInfo -> z);
             switch (positionIndex)
 		    {
-		    case 1: return *((intptr_t*)&(targetNpcInfo->x)) & 0xFFFFFFFF;
-		    case 2: return *((intptr_t*)&(targetNpcInfo->y)) & 0xFFFFFFFF;
-		    case 3: return *((intptr_t*)&(targetNpcInfo->z)) & 0xFFFFFFFF;
+		    case TARGET_NPC_X: return *((intptr_t*)&(targetNpcInfo->x)) & 0xFFFFFFFF;
+		    case TARGET_NPC_Y: return *((intptr_t*)&(targetNpcInfo->y)) & 0xFFFFFFFF;
+		    case TARGET_NPC_Z: return *((intptr_t*)&(targetNpcInfo->z)) & 0xFFFFFFFF;
 		    default: return INVALID;
 		    }
 	    }
@@ -271,12 +277,8 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
     		intptr_t chrIns = (intptr_t)*chrInsPtr;
 		    intptr_t address = getBaseFromType((PointerBaseType)hks_luaL_checkint(hksState, 2), hksState, chrIns);
 
-            float* playerX_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x70);
-            float* playerY_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x74);
-            float* playerZ_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x78);
-            targetNpcInfo->playerX = *playerX_ptr;
-            targetNpcInfo->playerY = *playerY_ptr;
-            targetNpcInfo->playerZ = *playerZ_ptr;
+			float** playerCoordinatePointers = targetNpcInfo->updatePlayerCoordinates(chrIns);
+			float* playerX_ptr = playerCoordinatePointers[0];
 
             if (targetNpcInfo->x == 42 && targetNpcInfo->y == 42 && targetNpcInfo->z == 42) return;
             printf("PLAYER X ADDRESS= %p\n", &(targetNpcInfo->playerX));
@@ -285,9 +287,6 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
             int teleportType = hks_luaL_checkint(hksState, 2);
 			switch (teleportType)
 			{
-			// case 1: 
-   //              targetNpcInfo -> speedUpEnemy();
-   //              break;
 			case 1: 
                 memcpy(playerX_ptr, &(targetNpcInfo->x), 12);
                 break;

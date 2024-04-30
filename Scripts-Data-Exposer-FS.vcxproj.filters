@@ -21,6 +21,12 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TargetNpcPatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetNpcInfoPtr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -125,6 +131,9 @@
     <ClInclude Include="TargetNpcInfoPtr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TargetNpcPatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\mem\cpp.hint" />
@@ -133,7 +142,7 @@
     <Text Include="include\mem\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="test.asm">
+    <MASM Include="decorator.asm">
       <Filter>Source Files</Filter>
     </MASM>
   </ItemGroup>

@@ -176,6 +176,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TargetNpcInfoPtr.cpp" />
+    <ClCompile Include="TargetNpcPatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AOBScan.h" />
@@ -211,11 +213,12 @@
     <ClInclude Include="ProcessData.h" />
     <ClInclude Include="TargetNpcInfo.h" />
     <ClInclude Include="TargetNpcInfoPtr.h" />
+    <ClInclude Include="TargetNpcPatch.h" />
     <ClInclude Include="testheader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\mem\cpp.hint" />
-    <MASM Include="test.asm">
+    <MASM Include="decorator.asm">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
