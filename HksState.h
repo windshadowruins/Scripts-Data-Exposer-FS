@@ -3,6 +3,7 @@
 #include "ProcessData.h"
 #include "Logger.h"
 #include "TargetNpcInfoPtr.h"
+#include "ExposerConfig.h"
 
 intptr_t getProcessBase();
 
@@ -135,9 +136,9 @@ int newEnvFunc(void** chrInsPtr, int envId, HksState* hksState)
 			    return INVALID;
 		    int positionIndex = hks_luaL_checkint(hksState, 2);
 
-            printf("TARGET BASE = %p, ", targetNpcInfo);
-			printf("TARGET BASE X = %p\n", &(targetNpcInfo->x));
-            printf("TARGET LOCATION = (%f, %f, %f)\n", targetNpcInfo->x, targetNpcInfo -> y, targetNpcInfo -> z);
+            Logger::debug("TARGET BASE = %p, ", targetNpcInfo);
+            Logger::debug("TARGET BASE X = %p\n", &(targetNpcInfo->x));
+            Logger::debug("TARGET LOCATION = (%f, %f, %f)\n", targetNpcInfo->x, targetNpcInfo -> y, targetNpcInfo -> z);
             switch (positionIndex)
 		    {
 		    case TARGET_NPC_X: return *((intptr_t*)&(targetNpcInfo->x)) & 0xFFFFFFFF;
@@ -234,6 +235,7 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
 
     case DEBUG_PRINT:
     {
+        if (buildType == BuildType::RELEASE) return;
         if (hks_lua_type(hksState, 2) != LUA_TSTRING)
             return;
         if (GetConsoleWindow() == NULL) 
@@ -281,8 +283,8 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
 			float* playerX_ptr = playerCoordinatePointers[0];
 
             if (targetNpcInfo->x == 42 && targetNpcInfo->y == 42 && targetNpcInfo->z == 42) return;
-            printf("PLAYER X ADDRESS= %p\n", &(targetNpcInfo->playerX));
-            printf("PLAYER LOCATION = (%f, %f, %f)\n", targetNpcInfo->playerX, targetNpcInfo->playerY, targetNpcInfo->playerZ);
+            Logger::debug("PLAYER X ADDRESS= %p\n", &(targetNpcInfo->playerX));
+            Logger::debug("PLAYER LOCATION = (%f, %f, %f)\n", targetNpcInfo->playerX, targetNpcInfo->playerY, targetNpcInfo->playerZ);
 
             int teleportType = hks_luaL_checkint(hksState, 2);
 			switch (teleportType)

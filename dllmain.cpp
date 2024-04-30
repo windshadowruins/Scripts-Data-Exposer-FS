@@ -11,6 +11,7 @@
 #include "AOBScan.h"
 #include "TargetNpcInfoPtr.h"
 #include "TargetNpcPatch.h"
+#include "ExposerConfig.h"
 
 #if _WIN64
 #pragma comment(lib, "libMinHook-x64-v141-md.lib")
@@ -120,11 +121,11 @@ void initTargetHooks()
     const char* targetStructureMask = ".......";
     // 48 8B 48 08 49 89 8D
     // for CE scanning
-    Logger::log("About to scan for target structure...");
+    Logger::debug("About to scan for target structure...");
     targetStructureMoveInstruction = AOBScanAddress(targetStructureAOB, targetStructureMask);
 
-    std::printf("%p\n", targetStructureMoveInstruction);
-    Logger::log("Was able to find target structure code: ");
+    Logger::debug("Target structure code location: ");
+    Logger::debug("%p\n", targetStructureMoveInstruction);
     // Insert Jump
     unsigned char* jumpAddress = reinterpret_cast<unsigned char*>(targetStructureMoveInstruction);
     unsigned char asmCode[] = {
@@ -141,12 +142,12 @@ void initTargetHooks()
     unsigned char* masmRoutineAddress = reinterpret_cast<unsigned char*>(allocatedMemory);
 
 	unsigned char* start_of_next_instruction = jumpAddress + SIZE_OF_CALL_INSTRUCTION;
-    int relativeOffset = reinterpret_cast<uintptr_t>(masmRoutineAddress) - reinterpret_cast<uintptr_t>(start_of_next_instruction);
-    printf("Pointer to Jump is %p \n", jumpAddress);
-    printf("Pointer to start of after-Jump instruction is %p \n", (void*) start_of_next_instruction);
-    std::cout << "Offset to Decorator from jump is " << relativeOffset << std::endl;
-    printf("Pointer to Decorator is %p \n", (void*) masmRoutineAddress);
-    printf("Double checking offset calculation %p \n", (void*) (reinterpret_cast<uintptr_t>(start_of_next_instruction) + relativeOffset));
+    // int relativeOffset = reinterpret_cast<uintptr_t>(masmRoutineAddress) - reinterpret_cast<uintptr_t>(start_of_next_instruction);
+    Logger::debug("Pointer to Jump is %p \n", jumpAddress);
+    Logger::debug("Pointer to start of after-Jump instruction is %p \n", (void*) start_of_next_instruction);
+    // std::cout << "Offset to Decorator from jump is " << relativeOffset << std::endl;
+    Logger::debug("Pointer to Decorator is %p \n", (void*) masmRoutineAddress);
+    // Logger::debug("Double checking offset calculation %p \n", (void*) (reinterpret_cast<uintptr_t>(start_of_next_instruction) + relativeOffset));
 
 
     // Patch the offset into the call instruction
@@ -156,9 +157,9 @@ void initTargetHooks()
 
 	for (DWORD fragment : asmCode)
     {
-        std::cout << std::hex << fragment << " ";
+        Logger::debug("%02X ", fragment);
     }
-    std::cout << std::endl;
+    Logger::debug("\n");
 
     // Copy assembly code to the target address
     memcpy(jumpAddress, asmCode, sizeof(asmCode));
@@ -171,7 +172,7 @@ void initTargetHooks()
     targetNpcInfo -> y = DEFAULT_COORDINATES;
     targetNpcInfo -> z = DEFAULT_COORDINATES;
 
-    std::printf("Target NPC info at : %p\n", targetNpcInfo);
+    Logger::debug("Target NPC info at : %p\n", targetNpcInfo);
 	
 }
 
@@ -187,7 +188,7 @@ void initHooks()
 
 void onAttach()
 {
-    if (OPEN_CONSOLE_ON_START && GetConsoleWindow() == NULL) 
+    if (OPEN_CONSOLE_ON_START && GetConsoleWindow() == NULL && buildType == BuildType::DEBUG) 
     {
         AllocConsole();
         freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);

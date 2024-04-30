@@ -3,6 +3,8 @@
 #include "TargetNpcPatch.h"
 #include <cstdio>
 
+#include "Logger.h"
+
 extern TargetNpcInfo* targetNpcInfo;
 
 extern "C" {
@@ -21,7 +23,7 @@ extern "C" {
         }
         catch (char* e)
         {
-            printf("Exception Caught: %s\n", e);
+            Logger::error("Exception Caught: %s\n", e);
         }
     }
 }

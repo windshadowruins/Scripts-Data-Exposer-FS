@@ -181,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AOBScan.h" />
+    <ClInclude Include="ExposerConfig.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="HksState.h" />
     <ClInclude Include="include\mem\aligned_alloc.h" />
