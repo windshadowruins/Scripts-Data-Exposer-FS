@@ -9,16 +9,25 @@ namespace Logger
         std::printf(str.append("\n").c_str());
     }
 
-	static inline void logFormatted(const char* format, va_list args)
+    static inline std::string asString(LogLevel log_level)
     {
-        vfprintf(stdout, format, args);
+        if (log_level == LogLevel::INFO) return "INFO";
+        else if (log_level == LogLevel::DEBUG) return "DEBUG";
+        else return "UNKNOWN";
+
+    }
+
+	static inline void logFormatted(LogLevel logLevel, const char* format, va_list args)
+    {
+        std::string formattedLevel = "[" + asString(logLevel) + "] ";
+        vfprintf(stdout, formattedLevel.append(format).c_str(), args);
     }
 
     static inline void info(const char* format, ...)
     {
         va_list argptr;
         va_start(argptr, format);
-        logFormatted(format, argptr);
+        logFormatted(LogLevel::INFO, format, argptr);
     	va_end(argptr);
     }
 
@@ -27,7 +36,7 @@ namespace Logger
         if (logLevel != LogLevel::DEBUG) return;
         va_list argptr;
         va_start(argptr, format);
-        logFormatted(format, argptr);
+        logFormatted(LogLevel::DEBUG, format, argptr);
     	va_end(argptr);
     }
 

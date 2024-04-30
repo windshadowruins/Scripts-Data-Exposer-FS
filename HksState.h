@@ -235,7 +235,6 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
 
     case DEBUG_PRINT:
     {
-        if (buildType == BuildType::RELEASE) return;
         if (hks_lua_type(hksState, 2) != LUA_TSTRING)
             return;
         if (GetConsoleWindow() == NULL) 
@@ -285,6 +284,7 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
             if (targetNpcInfo->x == 42 && targetNpcInfo->y == 42 && targetNpcInfo->z == 42) return;
             Logger::debug("PLAYER X ADDRESS= %p\n", &(targetNpcInfo->playerX));
             Logger::debug("PLAYER LOCATION = (%f, %f, %f)\n", targetNpcInfo->playerX, targetNpcInfo->playerY, targetNpcInfo->playerZ);
+            Logger::debug("TARGET LOCATION = (%f, %f, %f)\n", targetNpcInfo->x, targetNpcInfo->y, targetNpcInfo->z);
 
             int teleportType = hks_luaL_checkint(hksState, 2);
 			switch (teleportType)

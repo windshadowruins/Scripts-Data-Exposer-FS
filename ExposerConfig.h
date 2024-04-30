@@ -10,5 +10,5 @@ enum class LogLevel
 	DEBUG, INFO
 };
 
-static BuildType buildType = BuildType::DEBUG;
+static BuildType buildType = BuildType::RELEASE;
 static LogLevel logLevel = LogLevel::INFO;

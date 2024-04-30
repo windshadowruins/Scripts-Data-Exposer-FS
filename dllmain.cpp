@@ -121,11 +121,10 @@ void initTargetHooks()
     const char* targetStructureMask = ".......";
     // 48 8B 48 08 49 89 8D
     // for CE scanning
-    Logger::debug("About to scan for target structure...");
+    Logger::info("About to scan for target structure...\n");
     targetStructureMoveInstruction = AOBScanAddress(targetStructureAOB, targetStructureMask);
 
-    Logger::debug("Target structure code location: ");
-    Logger::debug("%p\n", targetStructureMoveInstruction);
+    Logger::info("Target structure code location: %p\n", targetStructureMoveInstruction);
     // Insert Jump
     unsigned char* jumpAddress = reinterpret_cast<unsigned char*>(targetStructureMoveInstruction);
     unsigned char asmCode[] = {
@@ -143,10 +142,10 @@ void initTargetHooks()
 
 	unsigned char* start_of_next_instruction = jumpAddress + SIZE_OF_CALL_INSTRUCTION;
     // int relativeOffset = reinterpret_cast<uintptr_t>(masmRoutineAddress) - reinterpret_cast<uintptr_t>(start_of_next_instruction);
-    Logger::debug("Pointer to Jump is %p \n", jumpAddress);
-    Logger::debug("Pointer to start of after-Jump instruction is %p \n", (void*) start_of_next_instruction);
+    Logger::info("Pointer to Jump is %p \n", jumpAddress);
+    Logger::info("Pointer to start of after-Jump instruction is %p \n", (void*) start_of_next_instruction);
     // std::cout << "Offset to Decorator from jump is " << relativeOffset << std::endl;
-    Logger::debug("Pointer to Decorator is %p \n", (void*) masmRoutineAddress);
+    Logger::info("Pointer to Decorator is %p \n", (void*) masmRoutineAddress);
     // Logger::debug("Double checking offset calculation %p \n", (void*) (reinterpret_cast<uintptr_t>(start_of_next_instruction) + relativeOffset));
 
 
@@ -157,9 +156,9 @@ void initTargetHooks()
 
 	for (DWORD fragment : asmCode)
     {
-        Logger::debug("%02X ", fragment);
+        Logger::info("%02X ", fragment);
     }
-    Logger::debug("\n");
+    Logger::info("\n");
 
     // Copy assembly code to the target address
     memcpy(jumpAddress, asmCode, sizeof(asmCode));
@@ -172,8 +171,7 @@ void initTargetHooks()
     targetNpcInfo -> y = DEFAULT_COORDINATES;
     targetNpcInfo -> z = DEFAULT_COORDINATES;
 
-    Logger::debug("Target NPC info at : %p\n", targetNpcInfo);
-	
+    Logger::info("Target NPC info at : %p\n", targetNpcInfo);
 }
 
 void initHooks() 
