@@ -32,9 +32,6 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HksState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\MinHook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -116,6 +113,7 @@
     <ClInclude Include="include\mem\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -132,6 +130,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TargetNpcPatch.h">
+=======
+    <ClInclude Include="game\AOBScan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Emevd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\HksState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ProcessData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ProcessStructs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Logger.h">
+>>>>>>> upstream/main
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -140,10 +156,13 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="include\mem\LICENSE.txt" />
+<<<<<<< HEAD
   </ItemGroup>
   <ItemGroup>
     <MASM Include="decorator.asm">
       <Filter>Source Files</Filter>
     </MASM>
+=======
+>>>>>>> upstream/main
   </ItemGroup>
 </Project>
