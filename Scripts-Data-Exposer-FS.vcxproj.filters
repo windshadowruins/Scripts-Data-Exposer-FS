@@ -27,6 +27,9 @@
     <ClCompile Include="TargetNpcInfoPtr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TargetNpcInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -113,24 +116,6 @@
     <ClInclude Include="include\mem\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="testheader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TargetNpcInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TargetNpcInfoPtr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TargetNpcPatch.h">
-=======
     <ClInclude Include="game\AOBScan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -147,7 +132,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Logger.h">
->>>>>>> upstream/main
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\TargetHksParams.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="target\TargetNpcInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="target\TargetNpcInfoPtr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="target\TargetNpcPatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="target\testheader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="target\ExposerConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="target\TargetNpcPosition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -156,13 +161,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="include\mem\LICENSE.txt" />
-<<<<<<< HEAD
   </ItemGroup>
   <ItemGroup>
     <MASM Include="decorator.asm">
       <Filter>Source Files</Filter>
     </MASM>
-=======
->>>>>>> upstream/main
   </ItemGroup>
 </Project>

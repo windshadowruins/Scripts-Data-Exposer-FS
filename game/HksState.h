@@ -2,6 +2,8 @@
 #include <string>
 #include "ProcessData.h"
 #include "../include/Logger.h"
+#include "../target/TargetNpcInfoPtr.h"
+#include "../target/TargetHksParams.h"
 
 enum EnvId 
 {
@@ -22,7 +24,6 @@ enum ActId
     REPLACE_TOOL = 10159,
 
 };
-
 
 //hks functions return invalid when something is wrong, so we'll do the same with our custom funcs
 constexpr int INVALID = -1;
@@ -167,6 +168,18 @@ void setValueFromAddress(intptr_t address, ValueInAddressType valueType, float v
     }
 }
 
+// Teleport interpreter
+inline void interpretTeleport(void** chrInsPtr, HksState* hksState)
+{
+    if (!hksHasParamInt(hksState, 2)) return;
+    intptr_t chrIns = (intptr_t)*chrInsPtr;
+    intptr_t address = getBaseFromType((PointerBaseType)hks_luaL_checkint(hksState, 2), hksState, *chrInsPtr);
+
+    float** playerCoordinatePointers = targetNpcInfo->updatePlayerCoordinates(chrIns);
+    int teleportType = hks_luaL_checkint(hksState, 2);
+    targetNpcInfo->teleport(teleportType, playerCoordinatePointers);
+}
+
 //New hook functions
 
 int newEnvFunc(void** chrInsPtr, int envId, HksState* hksState)
@@ -242,7 +255,13 @@ int newEnvFunc(void** chrInsPtr, int envId, HksState* hksState)
 
         return getValueFromAddress(valAddr, (ValueInAddressType)valType, bitOffset);
     }
-
+    case int(TargetEnvId::TARGET_NPC):
+    {
+        if (!hksHasParamInt(hksState, 2))
+            return INVALID;
+        int positionIndex = hks_luaL_checkint(hksState, 2);
+        return targetNpcInfo->getCoordinates(static_cast<TargetNpcPosition>(positionIndex));
+    }
     }
 
     return 0;
@@ -367,6 +386,11 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
         setValueFromAddress(addrToSet, (ValueInAddressType)valType, hks_luaL_checknumber(hksState, 6), bitOffset);
 
         break;
+    }
+
+    case int(TargetActId::TELEPORT_TO_TARGET):
+    {
+        interpretTeleport(chrInsPtr, hksState);
     }
 
     //ESD Functions

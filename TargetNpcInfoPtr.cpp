@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
 
-#include "TargetNpcInfo.h"
+#include "target/TargetNpcInfo.h"
 
 TargetNpcInfo* targetNpcInfo;

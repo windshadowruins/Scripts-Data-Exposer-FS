@@ -7,11 +7,11 @@
 #include "game/HksState.h"
 #include "include/MinHook.h"
 #include "Logger.h"
-#include "ProcessData.h"
-#include "AOBScan.h"
-#include "TargetNpcInfoPtr.h"
-#include "TargetNpcPatch.h"
-#include "ExposerConfig.h"
+#include "game/ProcessData.h"
+#include "game/AOBScan.h"
+#include "target/TargetNpcInfoPtr.h"
+#include "target/TargetNpcPatch.h"
+#include "include/ExposerConfig.h"
 #include "include/Logger.h"
 #include "game/ProcessData.h"
 #include "game/AOBScan.h"
@@ -50,7 +50,7 @@ void initTargetHooks()
     // 48 8B 48 08 49 89 8D
     // for CE scanning
     Logger::info("About to scan for target structure...\n");
-    targetStructureMoveInstruction = AOBScanAddress(targetStructureAOB, targetStructureMask);
+    void* targetStructureMoveInstruction = AOBScanAddress(targetStructureAOB, targetStructureMask);
 
     Logger::info("Target structure code location: %p\n", targetStructureMoveInstruction);
     // Insert Jump
@@ -140,7 +140,6 @@ void onAttach()
     Logger::log("Finished onAttach");
 }
 
-<<<<<<< HEAD
 void onDetach()
 {
     delete targetNpcInfo;

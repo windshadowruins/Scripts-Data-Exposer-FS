@@ -176,18 +176,19 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TargetNpcInfo.cpp" />
     <ClCompile Include="TargetNpcInfoPtr.cpp" />
     <ClCompile Include="TargetNpcPatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AOBScan.h" />
-    <ClInclude Include="ExposerConfig.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="game\AOBScan.h" />
     <ClInclude Include="game\Emevd.h" />
     <ClInclude Include="game\HksState.h" />
     <ClInclude Include="game\ProcessData.h" />
     <ClInclude Include="game\ProcessStructs.h" />
+    <ClInclude Include="game\TargetHksParams.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\mem\aligned_alloc.h" />
     <ClInclude Include="include\mem\arch.h" />
@@ -215,11 +216,12 @@
     <ClInclude Include="include\mem\utils.h" />
     <ClInclude Include="include\MinHook.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="ProcessData.h" />
-    <ClInclude Include="TargetNpcInfo.h" />
-    <ClInclude Include="TargetNpcInfoPtr.h" />
-    <ClInclude Include="TargetNpcPatch.h" />
-    <ClInclude Include="testheader.h" />
+    <ClInclude Include="target\TargetNpcInfo.h" />
+    <ClInclude Include="target\TargetNpcInfoPtr.h" />
+    <ClInclude Include="target\TargetNpcPatch.h" />
+    <ClInclude Include="target\TargetNpcPosition.h" />
+    <ClInclude Include="target\testheader.h" />
+    <ClInclude Include="target\ExposerConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\mem\cpp.hint" />

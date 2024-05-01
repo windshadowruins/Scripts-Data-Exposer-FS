@@ -1,9 +1,8 @@
 ﻿#include "pch.h"
-#include "TargetNpcInfoPtr.h"
-#include "TargetNpcPatch.h"
 #include <cstdio>
 
 #include "Logger.h"
+#include "target/TargetNpcInfo.h"
 
 extern TargetNpcInfo* targetNpcInfo;
 
