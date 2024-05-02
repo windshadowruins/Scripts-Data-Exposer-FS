@@ -3,3 +3,4 @@
 #include "target/TargetNpcInfo.h"
 
 TargetNpcInfo* targetNpcInfo;
+

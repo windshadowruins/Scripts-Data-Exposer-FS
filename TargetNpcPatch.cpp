@@ -15,7 +15,8 @@ extern "C" {
             float x = *targetX_ptr;
             float y = *(targetX_ptr + 1);
             float z = *(targetX_ptr + 2);
-            targetNpcInfo->baseHandle = value;
+            targetNpcInfo->targetBaseHandle = value;
+            targetNpcInfo->addTarget(value);
             targetNpcInfo->x = x;
             targetNpcInfo->y = y;
             targetNpcInfo->z = z;

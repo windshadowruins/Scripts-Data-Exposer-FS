@@ -9,10 +9,10 @@ namespace Logger
         std::printf(str.append("\n").c_str(), args ...);
     }
 
-    static inline std::string asString(LogLevel log_level)
+    static inline std::string asString(LogLevel logLevel)
     {
-        if (log_level == LogLevel::INFO) return "INFO";
-        else if (log_level == LogLevel::DEBUG) return "DEBUG";
+        if (logLevel == LogLevel::INFO) return "INFO";
+        else if (logLevel == LogLevel::DEBUG) return "DEBUG";
         else return "UNKNOWN";
 
     }
