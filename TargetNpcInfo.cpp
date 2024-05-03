@@ -45,6 +45,8 @@ CoordinatePointers TargetNpcInfo::updatePlayerCoordinates(intptr_t chrIns)
 
 void TargetNpcInfo::teleportTargetToPlayer(float* playerX_ptr) const
 {
+	std::vector<intptr_t> allCharacters = allLoadedCharacters(processBaseAddress);
+	if (!isValidCharacter(targetBaseHandle, allCharacters)) return;
 	float* targetX_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(targetBaseHandle + 0x190) + 0x68) + 0x70);
 	memcpy(targetX_ptr, playerX_ptr, 12);
 }
@@ -114,10 +116,11 @@ void TargetNpcInfo::teleport(int teleportType, const CoordinatePointers& playerC
 		teleportTargetToPlayer(playerX_ptr);
 		break;
 	case 3:
-		resetTeleportList();
+		teleportPlayerToList(playerX_ptr);
 		break;
 	case 4:
-		teleportPlayerToList(playerX_ptr);
+		resetTeleportList();
+		break;
 	default: ;
 	}
 }
