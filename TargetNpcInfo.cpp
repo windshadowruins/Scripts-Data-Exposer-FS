@@ -53,6 +53,7 @@ void TargetNpcInfo::speedUpEnemy() const
 
 void TargetNpcInfo::teleport(int teleportType, float** playerCoordinatePointers)
 {
+
 	float* playerX_ptr = playerCoordinatePointers[0];
 
 	if (x == 42 && y == 42 && z == 42) return;
@@ -62,40 +63,10 @@ void TargetNpcInfo::teleport(int teleportType, float** playerCoordinatePointers)
 	Logger::debug("====TARGETS LIST====\n");
 	float* targetX_ptr = (float*)(*(long long*)(*(long long*)(targetBaseHandle + 0x190) + 0x68) + 0x70);
 
-	if (targets[replayTargetIndex] == -1)
-	{
-		int nextTargetIndex = nextTarget();
-		if (nextTargetIndex == -1) return;
-		replayTargetIndex = nextTargetIndex;
-	}
-	// uint32_t replayTargetHP = *(uint32_t*)(*(long long*)(*(long long*)(targets[replayTargetIndex] + 0x190) + 0x0) + 0x138);
-	uint32_t replayTargetHP = getHP(targets[replayTargetIndex]);
-	if (replayTargetHP == 0)
-	{
-		targets[replayTargetIndex] = -1;
-		int nextTargetIndex = nextTarget();
-		if (nextTargetIndex == -1) return;
-		replayTargetIndex = nextTargetIndex;
-	}
-
-	float* replayTargetX_ptr = (float*)(*(long long*)(*(long long*)(targets[replayTargetIndex] + 0x190) + 0x68) + 0x70);
-	for (long long target : targets)
-	{
-		Logger::debug("Target Pointer = %lld ", target);
-		if (target != -1)
-		{
-			// uint32_t targetHP = *(uint32_t*)(*(long long*)(*(long long*)(target + 0x190) + 0x0) + 0x138);
-			uint32_t targetHP = getHP(target);
-			Logger::debug("Target HP = %d ", targetHP);
-		}
-		Logger::debug("Record index = %d", recordTargetsIndex);
-		Logger::debug("Replay index = %d", replayTargetIndex);
-		Logger::debug("\n");
-	}
 	switch (teleportType)
 	{
 	case 1:
-		teleportPlayerToTarget(playerX_ptr, replayTargetX_ptr);
+		teleportPlayerToTarget(playerX_ptr, targetX_ptr);
 		break;
 	case 2:
 		teleportTargetToPlayer(playerX_ptr);
@@ -107,6 +78,8 @@ void TargetNpcInfo::teleport(int teleportType, float** playerCoordinatePointers)
 		{
 			targets[i] = -1;
 		}
+	case 4:
+		teleportList(playerX_ptr);
 	default: ;
 	}
 
@@ -125,6 +98,40 @@ void TargetNpcInfo::addTarget(long long value)
 	targets[recordTargetsIndex] = value;
 	recordTargetsIndex++;
 	recordTargetsIndex %= MAX_NUM_TARGETS;
+}
+
+void TargetNpcInfo::teleportList(float* playerX_ptr)
+{
+	if (targets[replayTargetIndex] == -1)
+	{
+		int nextTargetIndex = nextTarget();
+		if (nextTargetIndex == -1) return;
+		replayTargetIndex = nextTargetIndex;
+	}
+	uint32_t replayTargetHP = getHP(targets[replayTargetIndex]);
+	if (replayTargetHP == 0)
+	{
+		targets[replayTargetIndex] = -1;
+		int nextTargetIndex = nextTarget();
+		if (nextTargetIndex == -1) return;
+		replayTargetIndex = nextTargetIndex;
+	}
+
+	float* replayTargetX_ptr = (float*)(*(long long*)(*(long long*)(targets[replayTargetIndex] + 0x190) + 0x68) + 0x70);
+	for (long long target : targets)
+	{
+		Logger::debug("Target Pointer = %lld ", target);
+		if (target != -1)
+		{
+			uint32_t targetHP = getHP(target);
+			Logger::debug("Target HP = %d ", targetHP);
+		}
+		Logger::debug("Record index = %d", recordTargetsIndex);
+		Logger::debug("Replay index = %d", replayTargetIndex);
+		Logger::debug("\n");
+	}
+
+	teleportPlayerToTarget(playerX_ptr, replayTargetX_ptr);
 }
 
 int TargetNpcInfo::nextTarget()

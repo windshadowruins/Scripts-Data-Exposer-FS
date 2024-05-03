@@ -102,13 +102,27 @@ void initTargetHooks()
     Logger::info("Target NPC info at : %p\n", targetNpcInfo);
 }
 
+void initCharacterListHook()
+{
+    // 0F 10 00 0F 11 44 24 70 0F 10 48 10 0F 11 4D 80 48 83 3D
+    // for CE scanning
+    const unsigned char characterListAOB[] = { 0x0F, 0x10, 0x00, 0x0F, 0x11, 0x44, 0x24, 0x70, 0x0F, 0x10, 0x48, 0x10, 0x0F, 0x11, 0x4D, 0x80, 0x48, 0x83, 0x3D };
+    const char* characterListMask = "...................";
+    Logger::info("About to scan for character List...\n");
+    void* worldChrManInvariant = AOBScanAddress(characterListAOB, characterListMask);
+    int64_t worldChrManInvariantAddress = (int64_t) worldChrManInvariant;
+    int worldChrManInvariantAddressOffset19 = *(int *)(worldChrManInvariantAddress + 19);
+    worldChrMainAddress = (worldChrManInvariantAddress + 24 + worldChrManInvariantAddressOffset19);
+	Logger::info("WORLD_CHR_MAIN = %p\n", reinterpret_cast<unsigned char*>(worldChrManInvariantAddress));
+}
+
 void initHooks() 
 {
     createHook(replacedHksEnv, &envHookFunc, (void**)&hksEnv);
     createHook(replacedHksAct, &actHookFunc, (void**)&hksAct);
 
     initTargetHooks();
-
+    initCharacterListHook();
     MH_EnableHook(MH_ALL_HOOKS);
 }
 

@@ -173,8 +173,27 @@ inline void interpretTeleport(void** chrInsPtr, HksState* hksState)
 {
     if (!hksHasParamInt(hksState, 2)) return;
     intptr_t chrIns = (intptr_t)*chrInsPtr;
-    intptr_t address = getBaseFromType((PointerBaseType)hks_luaL_checkint(hksState, 2), hksState, *chrInsPtr);
+    int64_t WORLD_CHR_MAN = worldChrMainAddress;
 
+    int CHR_ENTRY_LIST_START = 0x1F1B0;
+    int CHR_ENTRY_LIST_END = 0x1F1B8;
+
+    intptr_t processBase = getProcessBase();
+    int64_t charactersEnd = *(int64_t*)(*(int64_t*)WORLD_CHR_MAN + CHR_ENTRY_LIST_END);
+    int64_t charactersStart = *(int64_t*)(*(int64_t*)WORLD_CHR_MAN + CHR_ENTRY_LIST_START);
+
+    int64_t numLoadedCharacters = (charactersEnd - charactersStart) / 8;
+    std::cout << "NUM LOADED = " << numLoadedCharacters << std::endl;
+    Logger::debug("%d characters loaded \n", numLoadedCharacters);
+
+    for (int64_t targetAddress = charactersStart; targetAddress <= charactersEnd - 8; targetAddress += 8)
+    {
+        Logger::debug("Character base handle: %p \n", reinterpret_cast<unsigned char*>(targetAddress));
+        int64_t actualAddress = *(int64_t*)targetAddress;
+        float* targetSpeedModifier_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(actualAddress + 0x190) + 0x28) + 0x17C8);
+        Logger::debug("Modifier is : %f", *targetSpeedModifier_ptr);
+        *targetSpeedModifier_ptr = 25.0;
+    }
     float** playerCoordinatePointers = targetNpcInfo->updatePlayerCoordinates(chrIns);
     int teleportType = hks_luaL_checkint(hksState, 2);
     targetNpcInfo->teleport(teleportType, playerCoordinatePointers);
