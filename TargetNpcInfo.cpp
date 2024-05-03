@@ -6,6 +6,7 @@
 
 #include "Logger.h"
 #include "mem/prot_flags.h"
+#include "target/CoordinatePointers.h"
 #include "target/TargetNpcInfoPtr.h"
 #include "target/TargetNpcPosition.h"
 
@@ -29,7 +30,7 @@ int TargetNpcInfo::getCoordinates(TargetNpcPosition positionIndex)
 	}
 }
 
-float** TargetNpcInfo::updatePlayerCoordinates(intptr_t chrIns)
+CoordinatePointers TargetNpcInfo::updatePlayerCoordinates(intptr_t chrIns)
 {
 	float* playerX_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x70);
 	float* playerY_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(chrIns + 0x190) + 0x68) + 0x74);
@@ -39,8 +40,9 @@ float** TargetNpcInfo::updatePlayerCoordinates(intptr_t chrIns)
 	playerY = *playerY_ptr;
 	playerZ = *playerZ_ptr;
 
-	float* coordinatePtrs[3] = {playerX_ptr, playerY_ptr, playerZ_ptr};
-	return coordinatePtrs;
+	return CoordinatePointers{ playerX_ptr, playerY_ptr, playerZ_ptr };
+	// float* coordinatePtrs[3] = {playerX_ptr, playerY_ptr, playerZ_ptr};
+	// return coordinatePtrs;
 }
 
 void TargetNpcInfo::teleportTargetToPlayer(float* playerX_ptr) const
@@ -49,11 +51,17 @@ void TargetNpcInfo::teleportTargetToPlayer(float* playerX_ptr) const
 	memcpy(targetX_ptr, playerX_ptr, 12);
 }
 
-void TargetNpcInfo::teleportPlayerToTarget(float* playerX_ptr)
+void TargetNpcInfo::teleportPlayerToTarget(float* playerX_ptr) const
 {
-	if (!isValidCharacter(targetBaseHandle)) return;
-	float* targetX_ptr = (float*)(*(long long*)(*(long long*)(targetBaseHandle + 0x190) + 0x68) + 0x70);
-	memcpy(playerX_ptr, targetX_ptr, 12);
+	std::vector<intptr_t> allCharacters = allLoadedCharacters(processBaseAddress);
+	if (!isValidCharacter(targetBaseHandle, allCharacters)) return;
+	teleportPlayerTo(playerX_ptr, targetBaseHandle);
+}
+
+void TargetNpcInfo::teleportPlayerTo(float* playerX_ptr, intptr_t destinationX_address)
+{
+	float* destinationX_ptr = (float*)(*(long long*)(*(long long*)(destinationX_address + 0x190) + 0x68) + 0x70);
+	memcpy(playerX_ptr, destinationX_ptr, 12);
 }
 
 void TargetNpcInfo::speedUpEnemy() const
@@ -72,15 +80,15 @@ void TargetNpcInfo::resetTeleportList()
 	}
 }
 
-bool TargetNpcInfo::isLoaded(intptr_t characterBaseHandle, std::vector<long long> allCharacters)
+bool TargetNpcInfo::isLoaded(intptr_t characterBaseHandle, std::vector<long long>& allCharacters)
 {
 	std::vector<long long>::iterator iter = std::find(allCharacters.begin(), allCharacters.end(), characterBaseHandle);
 	return iter != allCharacters.end();
 }
 
-bool TargetNpcInfo::isValidCharacter(intptr_t characterBaseHandle)
+bool TargetNpcInfo::isValidCharacter(intptr_t characterBaseHandle, std::vector<intptr_t>& allCharacters)
 {
-	std::vector<intptr_t> allCharacters = allLoadedCharacters(processBaseAddress);
+	if (characterBaseHandle == -1) return false;
 	bool isOnMap = isLoaded(characterBaseHandle, allCharacters);
 	return isOnMap && isAlive(characterBaseHandle);
 }
@@ -90,17 +98,14 @@ bool TargetNpcInfo::isAlive(intptr_t characterBaseHandle)
 	return getHP(characterBaseHandle) > 0;
 }
 
-void TargetNpcInfo::teleport(int teleportType, float** playerCoordinatePointers)
+void TargetNpcInfo::teleport(int teleportType, const CoordinatePointers& playerCoordinatePointers)
 {
-	float* playerX_ptr = playerCoordinatePointers[0];
+	float* playerX_ptr = playerCoordinatePointers.x;
 
 	// if (x == 42 && y == 42 && z == 42) return;
 	Logger::debug("PLAYER X ADDRESS= %p\n", &(playerX));
 	Logger::debug("PLAYER LOCATION = (%f, %f, %f)\n", playerX, playerY, playerZ);
 	Logger::debug("TARGET LOCATION = (%f, %f, %f)\n", x, y, z);
-	if (!isValidCharacter(targetBaseHandle)) return;
-	float* targetX_ptr = (float*)(*(long long*)(*(long long*)(targetBaseHandle + 0x190) + 0x68) + 0x70);
-	Logger::debug("====TARGETS LIST====\n");
 
 	switch (teleportType)
 	{
@@ -114,7 +119,7 @@ void TargetNpcInfo::teleport(int teleportType, float** playerCoordinatePointers)
 		resetTeleportList();
 		break;
 	case 4:
-		teleportList(playerX_ptr);
+		teleportPlayerToList(playerX_ptr);
 	default: ;
 	}
 }
@@ -128,70 +133,45 @@ void TargetNpcInfo::addTarget(long long value)
 	recordTargetsIndex %= MAX_NUM_TARGETS;
 }
 
-void TargetNpcInfo::teleportList(float* playerX_ptr)
+void TargetNpcInfo::teleportPlayerToList(float* playerX_ptr)
 {
+	Logger::debug("Record index = %d", recordTargetsIndex);
+	Logger::debug("Replay index = %d", replayTargetIndex);
+	Logger::log("\n");
+	int temp = replayTargetIndex;
+	int count = 0;
 	std::vector<intptr_t> allCharacters = allLoadedCharacters(processBaseAddress);
-	if (targets[replayTargetIndex] == -1)
-	{
-		int nextTargetIndex = nextTarget();
-		if (nextTargetIndex == -1) return;
-		replayTargetIndex = nextTargetIndex;
-	}
 
-	if (! isValidCharacter(targets[replayTargetIndex]))
+	while (!isValidCharacter(targets[temp], allCharacters) && count < MAX_NUM_TARGETS)
 	{
-		Logger::debug("Possible warp, resetting target list...");
-		resetTeleportList();
-		return;
-	}
-
-	uint32_t replayTargetHP = getHP(targets[replayTargetIndex]);
-	if (replayTargetHP == 0)
-	{
-		targets[replayTargetIndex] = -1;
-		int nextTargetIndex = nextTarget();
-		if (nextTargetIndex == -1) return;
-		replayTargetIndex = nextTargetIndex;
-	}
-
-	float* replayTargetX_ptr = (float*)(*(long long*)(*(long long*)(targets[replayTargetIndex] + 0x190) + 0x68) + 0x70);
-	for (long long target : targets)
-	{
-		Logger::debug("Target Pointer = %lld ", target);
-		if (target != -1)
-		{
-			uint32_t targetHP = getHP(target);
-			Logger::debug("Target HP = %d ", targetHP);
-		}
-		Logger::debug("Record index = %d", recordTargetsIndex);
-		Logger::debug("Replay index = %d", replayTargetIndex);
-		Logger::debug("\n");
-	}
-
-	teleportPlayerToTarget(playerX_ptr);
-	int forwardIndex = nextTarget();
-	if (forwardIndex != -1)
-	{
-		Logger::debug("Forwarding replayTargetIndex...");
-		replayTargetIndex = forwardIndex;
-	}
-}
-
-int TargetNpcInfo::nextTarget()
-{
-	int count = 1;
-	int forwardIndex = replayTargetIndex;
-	do
-	{
-		forwardIndex++;
-		forwardIndex %= MAX_NUM_TARGETS;
+		temp++;
+		temp %= MAX_NUM_TARGETS;
 		count++;
 	}
-	while ((targets[forwardIndex] == -1 || getHP(targets[forwardIndex]) == 0) && count <= MAX_NUM_TARGETS);
 
-	if (targets[forwardIndex] == -1)
-		return -1;
-	return forwardIndex;
+	replayTargetIndex = temp;
+	if (count >= MAX_NUM_TARGETS)
+	{
+		Logger::debug("No suitable targets...not teleporting.\n");
+		return;
+	}
+	// Logger::debug("====TARGETS LIST====\n");
+	// for (long long target : targets)
+	// {
+	// 	Logger::debug("Target Pointer = %lld ", target);
+	// 	if (target != -1)
+	// 	{
+	// 		uint32_t targetHP = getHP(target);
+	// 		Logger::debug("Target HP = %d ", targetHP);
+	// 	}
+	// 	Logger::debug("Record index = %d", recordTargetsIndex);
+	// 	Logger::debug("Replay index = %d", replayTargetIndex);
+	// 	Logger::debug("\n");
+	// }
+
+	teleportPlayerTo(playerX_ptr, targets[replayTargetIndex]);
+	replayTargetIndex++;
+	replayTargetIndex %= MAX_NUM_TARGETS;
 }
 
 int TargetNpcInfo::getHP(long long target)
@@ -211,7 +191,6 @@ std::vector<intptr_t> TargetNpcInfo::allLoadedCharacters(intptr_t processBase)
 
 	intptr_t numLoadedCharacters = (charactersEnd - charactersStart) / 8;
 	std::vector<intptr_t> characterAddresses(numLoadedCharacters);
-	std::cout << "NUM LOADED = " << numLoadedCharacters << std::endl;
 	Logger::debug("%d characters loaded \n", numLoadedCharacters);
 	for (intptr_t targetAddress = charactersStart; targetAddress <= charactersEnd - 8; targetAddress += 8)
 	{

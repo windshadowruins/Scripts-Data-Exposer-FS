@@ -216,6 +216,7 @@
     <ClInclude Include="include\mem\utils.h" />
     <ClInclude Include="include\MinHook.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="target\CoordinatePointers.h" />
     <ClInclude Include="target\TargetNpcInfo.h" />
     <ClInclude Include="target\TargetNpcInfoPtr.h" />
     <ClInclude Include="target\TargetNpcPatch.h" />

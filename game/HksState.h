@@ -173,7 +173,7 @@ inline void interpretTeleport(void** chrInsPtr, HksState* hksState)
 {
     if (!hksHasParamInt(hksState, 2)) return;
     intptr_t chrIns = (intptr_t)*chrInsPtr;
-    float** playerCoordinatePointers = targetNpcInfo->updatePlayerCoordinates(chrIns);
+    CoordinatePointers playerCoordinatePointers = targetNpcInfo->updatePlayerCoordinates(chrIns);
 
     int teleportType = hks_luaL_checkint(hksState, 2);
     targetNpcInfo->teleport(teleportType, playerCoordinatePointers);
