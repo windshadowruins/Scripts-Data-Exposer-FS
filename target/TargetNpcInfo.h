@@ -31,4 +31,5 @@ struct TargetNpcInfo
 	void teleport(int teleportType, float** playerCoordinatePointers);
 	void addTarget(long long value);
 	int nextTarget();
+	uint32_t getHP(long long target);
 };

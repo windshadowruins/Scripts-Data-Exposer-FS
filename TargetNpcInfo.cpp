@@ -68,8 +68,8 @@ void TargetNpcInfo::teleport(int teleportType, float** playerCoordinatePointers)
 		if (nextTargetIndex == -1) return;
 		replayTargetIndex = nextTargetIndex;
 	}
-	uint32_t replayTargetHP = *(uint32_t*)(*(long long*)(*(long long*)(targets[replayTargetIndex] + 0x190) + 0x0) +
-		0x138);
+	// uint32_t replayTargetHP = *(uint32_t*)(*(long long*)(*(long long*)(targets[replayTargetIndex] + 0x190) + 0x0) + 0x138);
+	uint32_t replayTargetHP = getHP(targets[replayTargetIndex]);
 	if (replayTargetHP == 0)
 	{
 		targets[replayTargetIndex] = -1;
@@ -81,7 +81,16 @@ void TargetNpcInfo::teleport(int teleportType, float** playerCoordinatePointers)
 	float* replayTargetX_ptr = (float*)(*(long long*)(*(long long*)(targets[replayTargetIndex] + 0x190) + 0x68) + 0x70);
 	for (long long target : targets)
 	{
-		Logger::debug("%d ", target);
+		Logger::debug("Target Pointer = %lld ", target);
+		if (target != -1)
+		{
+			// uint32_t targetHP = *(uint32_t*)(*(long long*)(*(long long*)(target + 0x190) + 0x0) + 0x138);
+			uint32_t targetHP = getHP(target);
+			Logger::debug("Target HP = %d ", targetHP);
+		}
+		Logger::debug("Record index = %d", recordTargetsIndex);
+		Logger::debug("Replay index = %d", replayTargetIndex);
+		Logger::debug("\n");
 	}
 	switch (teleportType)
 	{
@@ -91,10 +100,22 @@ void TargetNpcInfo::teleport(int teleportType, float** playerCoordinatePointers)
 	case 2:
 		teleportTargetToPlayer(playerX_ptr);
 		break;
+	case 3:
+		recordTargetsIndex = 0;
+		replayTargetIndex = 0;
+		for (int i = 0; i <= MAX_NUM_TARGETS - 1; i ++)
+		{
+			targets[i] = -1;
+		}
 	default: ;
 	}
 
-	replayTargetIndex = nextTarget();
+	int forwardIndex = nextTarget();
+	if (forwardIndex != -1)
+	{
+		Logger::debug("Forwarding replayTargetIndex...");
+		replayTargetIndex = forwardIndex;
+	}
 }
 
 void TargetNpcInfo::addTarget(long long value)
@@ -110,14 +131,21 @@ int TargetNpcInfo::nextTarget()
 {
 	int count = 1;
 	int forwardIndex = replayTargetIndex;
-	while (targets[forwardIndex] == -1 && count <= MAX_NUM_TARGETS)
+	do
 	{
 		forwardIndex++;
 		forwardIndex %= MAX_NUM_TARGETS;
 		count++;
 	}
+	while ((targets[forwardIndex] == -1 || getHP(targets[forwardIndex]) == 0) && count <= MAX_NUM_TARGETS);
 
 	if (targets[forwardIndex] == -1)
 		return -1;
 	return forwardIndex;
+}
+
+uint32_t TargetNpcInfo::getHP(long long target)
+{
+	uint32_t targetHP = *(uint32_t*)(*(long long*)(*(long long*)(target + 0x190) + 0x0) + 0x138);
+	return targetHP;
 }
