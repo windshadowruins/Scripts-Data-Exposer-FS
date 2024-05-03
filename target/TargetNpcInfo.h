@@ -16,10 +16,10 @@ struct Position
 struct TargetNpcInfo
 {
 	intptr_t processBaseAddress;
-	long long targetBaseHandle;
+	intptr_t targetBaseHandle;
 	float x, y, z;
 	float playerX, playerY, playerZ;
-	long long targets[MAX_NUM_TARGETS] = {-1, -1, -1, -1, -1};
+	intptr_t targets[MAX_NUM_TARGETS] = {-1, -1, -1, -1, -1};
 	int recordTargetsIndex = 0;
 	int replayTargetIndex = 0;
 
@@ -34,11 +34,11 @@ struct TargetNpcInfo
 	static void teleportPlayerTo(float* playerX_ptr, intptr_t destinationX_address);
 	void speedUpEnemy() const;
 	void resetTeleportList();
-	static bool isLoaded(intptr_t characterBaseHandle, std::vector<long long>& allCharacters);
+	static bool isLoaded(intptr_t characterBaseHandle, std::vector<intptr_t>& allCharacters);
 	static bool isValidCharacter(intptr_t characterBaseHandle, std::vector<intptr_t>& allCharacters);
 	static bool isAlive(intptr_t characterBaseHandle);
 	void teleport(int teleportType, const CoordinatePointers& playerCoordinatePointers);
-	void addTarget(long long value);
-	static int getHP(long long target);
+	void addTarget(intptr_t value);
+	static int getHP(intptr_t target);
 	static std::vector<intptr_t> allLoadedCharacters(intptr_t processBase);
 };

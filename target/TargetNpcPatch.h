@@ -3,5 +3,5 @@
 extern "C" void decorator(void);
 
 extern "C" {
-    void setStructure(long long value);
+    void setStructure(intptr_t value);
 }

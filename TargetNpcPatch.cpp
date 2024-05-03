@@ -7,8 +7,8 @@
 extern TargetNpcInfo* targetNpcInfo;
 
 extern "C" {
-    void setStructure(long long value) {
-        float* targetX_ptr = (float*)(*(long long*)(*(long long*)(value + 0x190) + 0x68) + 0x70);
+    void setStructure(intptr_t value) {
+        float* targetX_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(value + 0x190) + 0x68) + 0x70);
 
         try
         {

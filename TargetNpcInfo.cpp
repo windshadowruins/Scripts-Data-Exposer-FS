@@ -41,13 +41,11 @@ CoordinatePointers TargetNpcInfo::updatePlayerCoordinates(intptr_t chrIns)
 	playerZ = *playerZ_ptr;
 
 	return CoordinatePointers{ playerX_ptr, playerY_ptr, playerZ_ptr };
-	// float* coordinatePtrs[3] = {playerX_ptr, playerY_ptr, playerZ_ptr};
-	// return coordinatePtrs;
 }
 
 void TargetNpcInfo::teleportTargetToPlayer(float* playerX_ptr) const
 {
-	float* targetX_ptr = (float*)(*(long long*)(*(long long*)(targetBaseHandle + 0x190) + 0x68) + 0x70);
+	float* targetX_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(targetBaseHandle + 0x190) + 0x68) + 0x70);
 	memcpy(targetX_ptr, playerX_ptr, 12);
 }
 
@@ -60,13 +58,13 @@ void TargetNpcInfo::teleportPlayerToTarget(float* playerX_ptr) const
 
 void TargetNpcInfo::teleportPlayerTo(float* playerX_ptr, intptr_t destinationX_address)
 {
-	float* destinationX_ptr = (float*)(*(long long*)(*(long long*)(destinationX_address + 0x190) + 0x68) + 0x70);
+	float* destinationX_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(destinationX_address + 0x190) + 0x68) + 0x70);
 	memcpy(playerX_ptr, destinationX_ptr, 12);
 }
 
 void TargetNpcInfo::speedUpEnemy() const
 {
-	float* targetSpeedModifier_ptr = (float*)(*(long long*)(*(long long*)(targetBaseHandle + 0x190) + 0x28) + 0x17C8);
+	float* targetSpeedModifier_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(targetBaseHandle + 0x190) + 0x28) + 0x17C8);
 	*targetSpeedModifier_ptr = 25.0;
 }
 
@@ -80,9 +78,9 @@ void TargetNpcInfo::resetTeleportList()
 	}
 }
 
-bool TargetNpcInfo::isLoaded(intptr_t characterBaseHandle, std::vector<long long>& allCharacters)
+bool TargetNpcInfo::isLoaded(intptr_t characterBaseHandle, std::vector<intptr_t>& allCharacters)
 {
-	std::vector<long long>::iterator iter = std::find(allCharacters.begin(), allCharacters.end(), characterBaseHandle);
+	std::vector<intptr_t>::iterator iter = std::find(allCharacters.begin(), allCharacters.end(), characterBaseHandle);
 	return iter != allCharacters.end();
 }
 
@@ -124,9 +122,9 @@ void TargetNpcInfo::teleport(int teleportType, const CoordinatePointers& playerC
 	}
 }
 
-void TargetNpcInfo::addTarget(long long value)
+void TargetNpcInfo::addTarget(intptr_t value)
 {
-	long long* foo = std::find(std::begin(targets), std::end(targets), value);
+	intptr_t* foo = std::find(std::begin(targets), std::end(targets), value);
 	if (foo != std::end(targets)) return;
 	targets[recordTargetsIndex] = value;
 	recordTargetsIndex++;
@@ -174,9 +172,9 @@ void TargetNpcInfo::teleportPlayerToList(float* playerX_ptr)
 	replayTargetIndex %= MAX_NUM_TARGETS;
 }
 
-int TargetNpcInfo::getHP(long long target)
+int TargetNpcInfo::getHP(intptr_t target)
 {
-	uint32_t targetHP = *(uint32_t*)(*(long long*)(*(long long*)(target + 0x190) + 0x0) + 0x138);
+	uint32_t targetHP = *(uint32_t*)(*(intptr_t*)(*(intptr_t*)(target + 0x190) + 0x0) + 0x138);
 	return targetHP;
 }
 
