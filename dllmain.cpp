@@ -94,7 +94,7 @@ void initTargetHooks()
     // Restore the original memory protection
     VirtualProtect(jumpAddress, sizeof(asmCode), oldProtect, &oldProtect);
 
-    targetNpcInfo = new TargetNpcInfo;
+    targetNpcInfo = new TargetNpcInfo(getProcessBase());
     targetNpcInfo -> x = DEFAULT_COORDINATES;
     targetNpcInfo -> y = DEFAULT_COORDINATES;
     targetNpcInfo -> z = DEFAULT_COORDINATES;
@@ -112,7 +112,7 @@ void initCharacterListHook()
     void* worldChrManInvariant = AOBScanAddress(characterListAOB, characterListMask);
     int64_t worldChrManInvariantAddress = (int64_t) worldChrManInvariant;
     int worldChrManInvariantAddressOffset19 = *(int *)(worldChrManInvariantAddress + 19);
-    worldChrMainAddress = (worldChrManInvariantAddress + 24 + worldChrManInvariantAddressOffset19);
+    worldChrManAddress = (worldChrManInvariantAddress + 24 + worldChrManInvariantAddressOffset19);
 	Logger::info("WORLD_CHR_MAIN = %p\n", reinterpret_cast<unsigned char*>(worldChrManInvariantAddress));
 }
 

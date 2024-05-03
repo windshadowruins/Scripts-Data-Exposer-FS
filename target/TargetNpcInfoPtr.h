@@ -2,4 +2,4 @@
 #include "TargetNpcInfo.h"
 
 extern TargetNpcInfo* targetNpcInfo;
-extern int64_t worldChrMainAddress;
+extern int64_t worldChrManAddress;
