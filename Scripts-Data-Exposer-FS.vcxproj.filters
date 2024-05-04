@@ -30,6 +30,12 @@
     <ClCompile Include="TargetNpcInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bullet\BulletInfo.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -167,6 +173,9 @@
   </ItemGroup>
   <ItemGroup>
     <MASM Include="decorator.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="bullet_decorator.asm">
       <Filter>Source Files</Filter>
     </MASM>
   </ItemGroup>

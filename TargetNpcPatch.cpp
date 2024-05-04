@@ -3,8 +3,10 @@
 
 #include "Logger.h"
 #include "target/TargetNpcInfo.h"
+#include "bullet/BulletInfo.h"
 
 extern TargetNpcInfo* targetNpcInfo;
+extern BulletInfo* bulletInfo;
 
 extern "C" {
     void setStructure(intptr_t value) {
@@ -25,5 +27,11 @@ extern "C" {
         {
             Logger::error("Exception Caught: %s\n", e);
         }
+    }
+}
+
+extern "C" {
+    void setBulletStructure(intptr_t value) {
+        bulletInfo->bulletBaseHandle = value;
     }
 }

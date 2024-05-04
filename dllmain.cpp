@@ -102,6 +102,60 @@ void initTargetHooks()
     Logger::info("Target NPC info at : %p\n", targetNpcInfo);
 }
 
+void initCreateBulletHook()
+{
+    // F3 0F 11 B3 14 0B 00 00 F3 0F 11 B3 18 0B 00 00 0F 28 74 24 40 48 83 C4 50 5B C3
+    // for CE scanning
+
+    // 48 B9 30 4F 34 3C FF
+    // For searching hook
+    const unsigned char createBulletAOB[] = {0xF3, 0x0F, 0x11, 0xB3, 0x14, 0x0B, 0x00, 0x00, 0xF3, 0x0F, 0x11, 0xB3, 0x18, 0x0B, 0x00, 0x00, 0x0F, 0x28, 0x74, 0x24, 0x40, 0x48, 0x83, 0xC4, 0x50, 0x5B, 0xC3 };
+    const char* createBulletMask = "...........................";
+    void* createBulletInvariant = AOBScanAddress(createBulletAOB, createBulletMask);
+    intptr_t createBulletInvariantAddress = (intptr_t)createBulletInvariant;
+    // mov rcx, <address>
+    // nop...
+	// unsigned char asmCode[] = {
+	//     0x48, 0xB9, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xD1, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+	//     0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+ //    };
+	unsigned char asmCode[] = {
+	    0x48, 0xB9, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xD1, 0x90, 0x90, 0x90, 0x90, };
+    unsigned char* jumpAddress = reinterpret_cast<unsigned char*>(createBulletInvariant);
+
+    void* allocatedMemory = bullet_decorator;
+
+    DWORD oldProtect;
+    VirtualProtect(jumpAddress, sizeof(asmCode), PAGE_EXECUTE_READWRITE, &oldProtect);
+
+    unsigned char* masmRoutineAddress = reinterpret_cast<unsigned char*>(allocatedMemory);
+
+    unsigned char* start_of_next_instruction = jumpAddress + SIZE_OF_CALL_INSTRUCTION;
+    Logger::info("Pointer to Jump is %p \n", jumpAddress);
+    Logger::info("Pointer to start of after-Jump instruction is %p \n", (void*)start_of_next_instruction);
+    Logger::info("Pointer to Decorator is %p \n", (void*)masmRoutineAddress);
+
+    // Patch the address into the call instruction
+    for (int i = 0; i <= ADDRESS_SIZE_IN_BYTES - 1; ++i) {
+        asmCode[i + 2] = (reinterpret_cast<uintptr_t>(allocatedMemory) >> (i * 8)) & 0xFF;
+    }
+
+    for (DWORD fragment : asmCode)
+    {
+        Logger::info("%02X ", fragment);
+    }
+    Logger::info("\n");
+
+    // Copy assembly code to the target address
+    memcpy(jumpAddress, asmCode, sizeof(asmCode));
+
+    // Restore the original memory protection
+    VirtualProtect(jumpAddress, sizeof(asmCode), oldProtect, &oldProtect);
+
+    bulletInfo = new BulletInfo(getProcessBase());
+    Logger::info("Bullet info at : %p\n", bulletInfo);
+}
+
 void initCharacterListHook()
 {
     // 0F 10 00 0F 11 44 24 70 0F 10 48 10 0F 11 4D 80 48 83 3D
@@ -122,6 +176,7 @@ void initHooks()
     createHook(replacedHksAct, &actHookFunc, (void**)&hksAct);
 
     initTargetHooks();
+    initCreateBulletHook();
     initCharacterListHook();
     MH_EnableHook(MH_ALL_HOOKS);
 }
