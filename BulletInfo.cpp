@@ -4,6 +4,7 @@
 BulletInfo::BulletInfo(intptr_t bulletBaseAddress): bulletBaseHandle(bulletBaseAddress)
 {
 	x = y = z = 42;
+	bulletID = *(int32_t*)(bulletBaseHandle + 0x4B4);
 }
 
 // 4B4 = Bullet ID

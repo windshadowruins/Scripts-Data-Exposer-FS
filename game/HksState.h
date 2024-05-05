@@ -179,6 +179,16 @@ inline void interpretTeleport(void** chrInsPtr, HksState* hksState)
     targetNpcInfo->teleport(teleportType, playerCoordinatePointers);
 }
 
+inline void interpretTeleportToBullet(void** chrInsPtr, HksState* hksState)
+{
+    if (!hksHasParamInt(hksState, 2)) return;
+    intptr_t chrIns = (intptr_t)*chrInsPtr;
+    CoordinatePointers playerCoordinatePointers = targetNpcInfo->updatePlayerCoordinates(chrIns);
+
+    int targetBulletID = hks_luaL_checkint(hksState, 2);
+    bulletLog->teleport(targetBulletID, playerCoordinatePointers);
+}
+
 //New hook functions
 
 int newEnvFunc(void** chrInsPtr, int envId, HksState* hksState)
@@ -390,6 +400,11 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
     case int(TargetActId::TELEPORT_TO_TARGET):
     {
         interpretTeleport(chrInsPtr, hksState);
+    }
+
+    case int(TargetActId::TELEPORT_TO_BULLET):
+    {
+        interpretTeleportToBullet(chrInsPtr, hksState);
     }
 
     //ESD Functions
