@@ -26,4 +26,24 @@ void BulletLog::teleport(int targetBulletID, const CoordinatePointers& playerCoo
 		Logger::debug("Bullet %d = (%f, %f, %f)\n", bullet.bulletID, *bulletPosition.x, *bulletPosition.y, *bulletPosition.z);
 	}
 	Logger::debug("\n\n");
+	auto it = std::find_if(bullets.rbegin(), bullets.rend(), [targetBulletID](BulletInfo b)
+	{
+		return b.bulletID == targetBulletID;
+	});
+	if (it == bullets.rend())
+	{
+		Logger::debug("No suitable bullet with ID %d found.", targetBulletID);
+		return;
+	}
+	else
+	{
+		Logger::debug("Teleporting to bullet ID %d", it->bulletID);
+		teleportPlayerTo(playerCoordinatePointers.x, it->position().x);
+	}
 }
+
+void BulletLog::teleportPlayerTo(float* to, float* from)
+{
+	memcpy(to, from, 12);
+}
+
