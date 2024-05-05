@@ -109,6 +109,7 @@ void initCreateBulletHook()
 
     // 48 B9 30 4F 34 3C FF
     // For searching hook
+
     const unsigned char createBulletAOB[] = {0xF3, 0x0F, 0x11, 0xB3, 0x14, 0x0B, 0x00, 0x00, 0xF3, 0x0F, 0x11, 0xB3, 0x18, 0x0B, 0x00, 0x00, 0x0F, 0x28, 0x74, 0x24, 0x40, 0x48, 0x83, 0xC4, 0x50, 0x5B, 0xC3 };
     const char* createBulletMask = "...........................";
     void* createBulletInvariant = AOBScanAddress(createBulletAOB, createBulletMask);
@@ -152,8 +153,8 @@ void initCreateBulletHook()
     // Restore the original memory protection
     VirtualProtect(jumpAddress, sizeof(asmCode), oldProtect, &oldProtect);
 
-    bulletInfo = new BulletInfo(getProcessBase());
-    Logger::info("Bullet info at : %p\n", bulletInfo);
+    bulletLog = new BulletLog(getProcessBase());
+    Logger::info("Bullet info at : %p\n", bulletLog);
 }
 
 void initCharacterListHook()

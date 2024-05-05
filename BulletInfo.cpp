@@ -1,13 +1,13 @@
 ﻿#include "pch.h"
 #include "bullet/BulletInfo.h"
 
-BulletInfo::BulletInfo(intptr_t processBase)
+BulletInfo::BulletInfo(intptr_t bulletBaseAddress): bulletBaseHandle(bulletBaseAddress)
 {
-	processBaseAddress = processBase;
-	bulletBaseHandle = -1;
 	x = y = z = 42;
 }
 
+// 4B4 = Bullet ID
+// 4C0 = Shooter ID
 CoordinatePointers BulletInfo::position() const
 {
 	float* bulletX = (float*)(bulletBaseHandle + 0x10);

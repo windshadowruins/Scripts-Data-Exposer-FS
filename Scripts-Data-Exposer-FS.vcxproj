@@ -170,6 +170,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BulletInfo.cpp" />
+    <ClCompile Include="BulletLog.cpp" />
     <ClCompile Include="bullet\BulletInfo.h" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">
@@ -184,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AOBScan.h" />
+    <ClInclude Include="bullet\BulletLog.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="game\AOBScan.h" />
     <ClInclude Include="game\Emevd.h" />

@@ -1,14 +1,15 @@
 #pragma once
 #include "pch.h"
 
+#include <vector>
+
 #include "../target/CoordinatePointers.h"
 
 struct BulletInfo
 {
-	intptr_t processBaseAddress;
 	intptr_t bulletBaseHandle;
 	float x, y, z;
 
-	BulletInfo(intptr_t processBase);
+	BulletInfo(intptr_t bulletBaseAddress);
 	CoordinatePointers position() const;
 };
