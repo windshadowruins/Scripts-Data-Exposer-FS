@@ -400,11 +400,13 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
     case int(TargetActId::TELEPORT_TO_TARGET):
     {
         interpretTeleport(chrInsPtr, hksState);
+    	break;
     }
 
     case int(TargetActId::TELEPORT_TO_BULLET):
     {
         interpretTeleportToBullet(chrInsPtr, hksState);
+        break;
     }
 
     //ESD Functions
