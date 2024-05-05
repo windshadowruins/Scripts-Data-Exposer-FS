@@ -12,5 +12,5 @@ struct BulletLog
 	BulletLog(intptr_t processBaseHandle);
 	void add(BulletInfo bullet);
 	void teleport(int targetBulletID, const CoordinatePointers& playerCoordinatePointers) const;
-	static void teleportPlayerTo(float* to, float* from);
+	static void teleportPlayerTo(float* from, float* to);
 };

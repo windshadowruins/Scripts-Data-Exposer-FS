@@ -35,15 +35,12 @@ void BulletLog::teleport(int targetBulletID, const CoordinatePointers& playerCoo
 		Logger::debug("No suitable bullet with ID %d found.", targetBulletID);
 		return;
 	}
-	else
-	{
-		Logger::debug("Teleporting to bullet ID %d", it->bulletID);
-		teleportPlayerTo(playerCoordinatePointers.x, it->position().x);
-	}
+	Logger::debug("Teleporting to bullet ID %d", it->bulletID);
+	teleportPlayerTo(playerCoordinatePointers.x, it->position().x);
 }
 
-void BulletLog::teleportPlayerTo(float* to, float* from)
+void BulletLog::teleportPlayerTo(float* from, float* to)
 {
-	memcpy(to, from, 12);
+	memcpy(from, to, 12);
 }
 
