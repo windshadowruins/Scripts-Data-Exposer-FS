@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "TargetNpcInfo.h"
+#include "../target/TargetNpcInfo.h"
 #include "../bullet/BulletLog.h"
 
 extern TargetNpcInfo* targetNpcInfo;

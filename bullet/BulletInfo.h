@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "../target/CoordinatePointers.h"
+#include "../game/CoordinatePointers.h"
 
 struct BulletInfo
 {

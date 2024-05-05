@@ -24,19 +24,19 @@
     <ClCompile Include="TargetNpcPatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TargetNpcInfoPtr.cpp">
+    <ClCompile Include="WorldInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TargetNpcInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bullet\BulletInfo.h">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BulletInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BulletLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletPatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,7 +149,7 @@
     <ClInclude Include="target\TargetNpcInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="target\TargetNpcInfoPtr.h">
+    <ClInclude Include="world\WorldInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="target\TargetNpcPatch.h">
@@ -164,11 +164,17 @@
     <ClInclude Include="target\TargetNpcPosition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="target\CoordinatePointers.h">
+    <ClInclude Include="game\CoordinatePointers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bullet\BulletLog.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\BulletPatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\BulletInfo.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -178,7 +184,7 @@
     <Text Include="include\mem\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="decorator.asm">
+    <MASM Include="target_decorator.asm">
       <Filter>Source Files</Filter>
     </MASM>
     <MASM Include="bullet_decorator.asm">

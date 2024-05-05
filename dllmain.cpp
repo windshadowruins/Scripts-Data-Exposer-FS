@@ -9,8 +9,9 @@
 #include "Logger.h"
 #include "game/ProcessData.h"
 #include "game/AOBScan.h"
-#include "target/TargetNpcInfoPtr.h"
+#include "world/WorldInfo.h"
 #include "target/TargetNpcPatch.h"
+#include "bullet/BulletPatch.h"
 #include "include/ExposerConfig.h"
 #include "include/Logger.h"
 #include "game/ProcessData.h"
@@ -61,7 +62,7 @@ void initTargetHooks()
 
     SIZE_T allocationSize = 4096;
 
-    void* allocatedMemory = decorator;
+    void* allocatedMemory = target_decorator;
 
 	DWORD oldProtect;
     VirtualProtect(jumpAddress, sizeof(asmCode), PAGE_EXECUTE_READWRITE, &oldProtect);

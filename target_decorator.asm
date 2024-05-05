@@ -1,9 +1,9 @@
-PUBLIC decorator
+PUBLIC target_decorator
 .data
 	extern setStructure:PROC
 
 .code
-decorator proc
+target_decorator proc
 	push rax
 	push rcx
 	mov rcx, rax
@@ -14,5 +14,5 @@ decorator proc
 	mov [r13+000006B0h],rcx
 	mov rcx,r14
 	ret
-decorator endp
+target_decorator endp
 end

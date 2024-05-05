@@ -2,7 +2,7 @@
 #include <string>
 #include "ProcessData.h"
 #include "../include/Logger.h"
-#include "../target/TargetNpcInfoPtr.h"
+#include "../world/WorldInfo.h"
 #include "../target/TargetHksParams.h"
 
 enum EnvId 

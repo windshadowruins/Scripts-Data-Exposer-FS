@@ -1,13 +1,9 @@
 ﻿#include "pch.h"
-#include <cstdio>
 
 #include "Logger.h"
 #include "target/TargetNpcInfo.h"
-#include "bullet/BulletInfo.h"
-#include "bullet/BulletLog.h"
 
 extern TargetNpcInfo* targetNpcInfo;
-extern BulletLog* bulletLog;
 
 extern "C" {
     void setStructure(intptr_t value) {
@@ -28,11 +24,5 @@ extern "C" {
         {
             Logger::error("Exception Caught: %s\n", e);
         }
-    }
-}
-
-extern "C" {
-    void setBulletStructure(intptr_t value) {
-        bulletLog->add(BulletInfo(value));
     }
 }

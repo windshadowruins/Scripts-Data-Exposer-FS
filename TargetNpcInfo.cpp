@@ -6,8 +6,8 @@
 
 #include "Logger.h"
 #include "mem/prot_flags.h"
-#include "target/CoordinatePointers.h"
-#include "target/TargetNpcInfoPtr.h"
+#include "game/CoordinatePointers.h"
+#include "world/WorldInfo.h"
 #include "target/TargetNpcPosition.h"
 
 TargetNpcInfo::TargetNpcInfo(intptr_t processBaseAddress)

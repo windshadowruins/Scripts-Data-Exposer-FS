@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <vector>
 
-#include "CoordinatePointers.h"
+#include "../game/CoordinatePointers.h"
 #include "TargetNpcPosition.h"
 
 static const int DEFAULT_COORDINATES = 42;
