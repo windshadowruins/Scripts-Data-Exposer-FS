@@ -5,6 +5,7 @@
 #include "../tae/rootMotionReduction/RootMotionReductionHksParams.h"
 #include "../world/WorldInfo.h"
 #include "../target/TargetHksParams.h"
+#include "../world/ActionInterpreter.h"
 
 enum EnvId 
 {
@@ -169,34 +170,6 @@ void setValueFromAddress(intptr_t address, ValueInAddressType valueType, float v
             *(uint8_t*)(address) = *(uint8_t*)(address) | SINGLE_BIT_MASKS[bitOffset];
         return;
     }
-}
-
-// Teleport interpreter
-inline void interpretTeleport(void** chrInsPtr, HksState* hksState)
-{
-    if (!hksHasParamInt(hksState, 2)) return;
-    intptr_t chrIns = (intptr_t)*chrInsPtr;
-    CoordinatePointers playerCoordinatePointers = targetNpcInfo->updatePlayerCoordinates(chrIns);
-
-    int teleportType = hks_luaL_checkint(hksState, 2);
-    targetNpcInfo->teleport(teleportType, playerCoordinatePointers);
-}
-
-inline void interpretTeleportToBullet(void** chrInsPtr, HksState* hksState)
-{
-    if (!hksHasParamInt(hksState, 2)) return;
-    intptr_t chrIns = (intptr_t)*chrInsPtr;
-    CoordinatePointers playerCoordinatePointers = targetNpcInfo->updatePlayerCoordinates(chrIns);
-
-    int targetBulletID = hks_luaL_checkint(hksState, 2);
-    bulletLog->teleport(targetBulletID, playerCoordinatePointers);
-}
-
-inline void interpretTae(void** chrInsPtr, HksState* hksState)
-{
-    if (!hksHasParamInt(hksState, 2)) return;
-    float rootMotionReductionFactor = hks_luaL_checkint(hksState, 2) / 1000.;
-    taeEditor->updateRootMotion(rootMotionReductionFactor);
 }
 
 //New hook functions
@@ -420,7 +393,7 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
     }
 
     case int(TaeActId::UPDATE_ROOT_MOTION_REDUCTION) :
-        interpretTae(chrInsPtr, hksState);
+	    interpretTae(chrInsPtr, hksState);
 
     //ESD Functions
     case REPLACE_TOOL:

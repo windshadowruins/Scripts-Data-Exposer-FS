@@ -174,7 +174,7 @@ void initCharacterListHook()
 	Logger::info("WORLD_CHR_MAIN = %p\n", reinterpret_cast<unsigned char*>(worldChrManInvariantAddress));
 }
 
-void checkRootMotionDecorator()
+void initRootMotionReductionHook()
 {
     // f3 41 0f 10 70 04 f3 41 0f 5c 30 0f 29 7c 24 20
     // for CE scanning unmodified code
@@ -225,7 +225,7 @@ void initHooks()
     createHook(replacedHksEnv, &envHookFunc, (void**)&hksEnv);
     createHook(replacedHksAct, &actHookFunc, (void**)&hksAct);
 
-    checkRootMotionDecorator();
+    initRootMotionReductionHook();
     initTargetHooks();
     initCreateBulletHook();
     initCharacterListHook();

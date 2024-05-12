@@ -169,6 +169,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ActionInterpreter.cpp" />
     <ClCompile Include="BulletInfo.cpp" />
     <ClCompile Include="BulletLog.cpp" />
     <ClCompile Include="BulletPatch.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="tae\rootMotionReduction\RootMotionReductionPatch.h" />
     <ClInclude Include="tae\TaeEditor.h" />
     <ClInclude Include="target\TargetNpcInfo.h" />
+    <ClInclude Include="world\ActionInterpreter.h" />
     <ClInclude Include="world\WorldInfo.h" />
     <ClInclude Include="target\TargetNpcPatch.h" />
     <ClInclude Include="target\TargetNpcPosition.h" />

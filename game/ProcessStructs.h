@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 
 enum PointerBaseType { GAME = 0, CHR_INS = 1, TARGET_CHR_INS = 2 };
 

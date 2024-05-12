@@ -39,6 +39,15 @@
     <ClCompile Include="BulletPatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RootMotionReductionPatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaeEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionInterpreter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -176,6 +185,18 @@
     <ClInclude Include="bullet\BulletInfo.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="tae\rootMotionReduction\RootMotionReductionHksParams.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tae\rootMotionReduction\RootMotionReductionPatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tae\TaeEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="world\ActionInterpreter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\mem\cpp.hint" />
@@ -188,6 +209,9 @@
       <Filter>Source Files</Filter>
     </MASM>
     <MASM Include="bullet_decorator.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="rmr_decorator.asm">
       <Filter>Source Files</Filter>
     </MASM>
   </ItemGroup>
