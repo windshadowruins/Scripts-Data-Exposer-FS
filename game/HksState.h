@@ -2,6 +2,7 @@
 #include <string>
 #include "ProcessData.h"
 #include "../include/Logger.h"
+#include "../tae/rootMotionReduction/RootMotionReductionHksParams.h"
 #include "../world/WorldInfo.h"
 #include "../target/TargetHksParams.h"
 
@@ -187,6 +188,13 @@ inline void interpretTeleportToBullet(void** chrInsPtr, HksState* hksState)
 
     int targetBulletID = hks_luaL_checkint(hksState, 2);
     bulletLog->teleport(targetBulletID, playerCoordinatePointers);
+}
+
+inline void interpretTae(void** chrInsPtr, HksState* hksState)
+{
+    if (!hksHasParamInt(hksState, 2)) return;
+    float rootMotionReductionFactor = hks_luaL_checkint(hksState, 2) / 1000.;
+    taeEditor->updateRootMotion(rootMotionReductionFactor);
 }
 
 //New hook functions
@@ -408,6 +416,9 @@ static void newActFunc(void** chrInsPtr, int actId, HksState* hksState)
         interpretTeleportToBullet(chrInsPtr, hksState);
         break;
     }
+
+    case int(TaeActId::UPDATE_ROOT_MOTION_REDUCTION) :
+        interpretTae(chrInsPtr, hksState);
 
     //ESD Functions
     case REPLACE_TOOL:

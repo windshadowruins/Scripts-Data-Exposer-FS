@@ -12,12 +12,12 @@
 #include "world/WorldInfo.h"
 #include "target/TargetNpcPatch.h"
 #include "bullet/BulletPatch.h"
-#include "RootMotionReductionPatch/RootMotionReductionPatch.h"
+#include "tae/rootMotionReduction/RootMotionReductionPatch.h"
 #include "include/ExposerConfig.h"
 #include "include/Logger.h"
 #include "game/ProcessData.h"
 #include "game/AOBScan.h"
-#include "RootMotionReductionPatch/RootMotionReductionPatch.h"
+#include "tae/rootMotionReduction/RootMotionReductionPatch.h"
 
 
 #if _WIN64
@@ -216,10 +216,8 @@ void checkRootMotionDecorator()
     memcpy(jumpAddress, asmCode, sizeof(asmCode));
     VirtualProtect(jumpAddress, sizeof(asmCode), oldProtect, &oldProtect);
 
-    tempFactorStorage = new float;
-    *tempFactorStorage = 0.42;
-    Logger::info("Temp Factor pointer is at %p \n", (void*)tempFactorStorage);
-
+    taeEditor = new TaeEditor();
+    Logger::info("Temp Factor pointer is at %p \n", (void*) taeEditor -> rootMotionReductionFactor);
 }
 
 void initHooks() 
@@ -265,7 +263,7 @@ void onAttach()
 void onDetach()
 {
     delete targetNpcInfo;
-    delete tempFactorStorage;
+    delete taeEditor;
     MH_DisableHook(MH_ALL_HOOKS);
     MH_Uninitialize();
 }

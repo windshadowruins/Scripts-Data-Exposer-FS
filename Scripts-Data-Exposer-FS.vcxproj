@@ -183,6 +183,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RootMotionReductionPatch.cpp" />
+    <ClCompile Include="TaeEditor.cpp" />
     <ClCompile Include="TargetNpcInfo.cpp" />
     <ClCompile Include="WorldInfo.cpp" />
     <ClCompile Include="TargetNpcPatch.cpp" />
@@ -226,7 +227,9 @@
     <ClInclude Include="include\MinHook.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="game\CoordinatePointers.h" />
-    <ClInclude Include="rootMotionReductionPatch\RootMotionReductionPatch.h" />
+    <ClInclude Include="tae\rootMotionReduction\RootMotionReductionHksParams.h" />
+    <ClInclude Include="tae\rootMotionReduction\RootMotionReductionPatch.h" />
+    <ClInclude Include="tae\TaeEditor.h" />
     <ClInclude Include="target\TargetNpcInfo.h" />
     <ClInclude Include="world\WorldInfo.h" />
     <ClInclude Include="target\TargetNpcPatch.h" />
