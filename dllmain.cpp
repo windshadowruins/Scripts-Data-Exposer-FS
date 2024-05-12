@@ -12,10 +12,12 @@
 #include "world/WorldInfo.h"
 #include "target/TargetNpcPatch.h"
 #include "bullet/BulletPatch.h"
+#include "RootMotionReductionPatch/RootMotionReductionPatch.h"
 #include "include/ExposerConfig.h"
 #include "include/Logger.h"
 #include "game/ProcessData.h"
 #include "game/AOBScan.h"
+#include "RootMotionReductionPatch/RootMotionReductionPatch.h"
 
 
 #if _WIN64
@@ -172,11 +174,55 @@ void initCharacterListHook()
 	Logger::info("WORLD_CHR_MAIN = %p\n", reinterpret_cast<unsigned char*>(worldChrManInvariantAddress));
 }
 
+void checkRootMotionDecorator()
+{
+    // f3 41 0f 10 70 04 f3 41 0f 5c 30 0f 29 7c 24 20
+    // for CE scanning unmodified code
+
+    // 48 8d 44 24 50 f3 41 0f 10 70 04 f3 41 0f 5c 30 0f 29 7c 24 20
+    // for CE scanning unmodified code
+
+    // f3 0f 5c 00 f3 0f 5c 10 0f 29 74 24 30
+    // for CE scanning after
+    const unsigned char rmrAccessAOB[] = { 0x48, 0x8d, 0x44, 0x24, 0x50, 0xf3, 0x41, 0x0f, 0x10, 0x70, 0x04, 0xf3, 0x41, 0x0f, 0x5c, 0x30, 0x0f, 0x29, 0x7c, 0x24, 0x20 };
+    const char* rmrAccessMask = "................";
+    Logger::info("About to scan for Root Motion Reduction access code...\n");
+    void* rmrAccessInvariant = AOBScanAddress(rmrAccessAOB, rmrAccessMask);
+    int64_t rmrAccessInvariantAddress = (int64_t)rmrAccessInvariant;
+
+    unsigned char asmCode[] = {
+    0x49, 0x89, 0xE2, 0x48, 0xB9, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xD1, 0x90, };
+    unsigned char* jumpAddress = reinterpret_cast<unsigned char*>(rmrAccessInvariant);
+
+    DWORD oldProtect;
+    VirtualProtect(jumpAddress, sizeof(asmCode), PAGE_EXECUTE_READWRITE, &oldProtect);
+    void* allocatedMemory = rmr_decorator;
+    unsigned char* start_of_next_instruction = jumpAddress + SIZE_OF_CALL_INSTRUCTION;
+    unsigned char* masmRoutineAddress = reinterpret_cast<unsigned char*>(allocatedMemory);
+    Logger::info("Pointer to Jump from is %p \n", jumpAddress);
+    // Logger::info("Pointer to start of after-Jump instruction is %p \n", (void*)start_of_next_instruction);
+    Logger::info("Pointer to Decorator is %p \n", (void*)masmRoutineAddress);
+    // Logger::info("Offset is %p \n", (void*)masmRoutineAddress);
+    for (int i = 0; i <= ADDRESS_SIZE_IN_BYTES - 1; ++i) {
+        asmCode[i + 5] = (reinterpret_cast<uintptr_t>(allocatedMemory) >> (i * 8)) & 0xFF;
+    }
+    for (DWORD fragment : asmCode)
+    {
+        Logger::info("%02X ", fragment);
+    }
+    Logger::info("\n");
+
+    // Copy assembly code to the target address
+    memcpy(jumpAddress, asmCode, sizeof(asmCode));
+    VirtualProtect(jumpAddress, sizeof(asmCode), oldProtect, &oldProtect);
+}
+
 void initHooks() 
 {
     createHook(replacedHksEnv, &envHookFunc, (void**)&hksEnv);
     createHook(replacedHksAct, &actHookFunc, (void**)&hksAct);
 
+    checkRootMotionDecorator();
     initTargetHooks();
     initCreateBulletHook();
     initCharacterListHook();

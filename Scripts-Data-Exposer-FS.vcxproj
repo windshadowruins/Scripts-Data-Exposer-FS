@@ -182,6 +182,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RootMotionReductionPatch.cpp" />
     <ClCompile Include="TargetNpcInfo.cpp" />
     <ClCompile Include="WorldInfo.cpp" />
     <ClCompile Include="TargetNpcPatch.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="include\MinHook.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="game\CoordinatePointers.h" />
+    <ClInclude Include="rootMotionReductionPatch\RootMotionReductionPatch.h" />
     <ClInclude Include="target\TargetNpcInfo.h" />
     <ClInclude Include="world\WorldInfo.h" />
     <ClInclude Include="target\TargetNpcPatch.h" />
@@ -239,6 +241,9 @@
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </MASM>
+    <MASM Include="rmr_decorator.asm">
+      <FileType>Document</FileType>
     </MASM>
   </ItemGroup>
   <ItemGroup>
