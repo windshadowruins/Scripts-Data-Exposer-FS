@@ -10,8 +10,8 @@ extern "C" {
 	{
 		float* startReductionPtr = (float*)start;
 		float* endReductionPtr = startReductionPtr + 1;
-		*startReductionPtr = *startReductionPtr + 0.0001;
-		*endReductionPtr = *endReductionPtr + 0.0001;
+		*startReductionPtr = *startReductionPtr + 0.001;
+		*endReductionPtr = *endReductionPtr + 0.001;
 		*tempFactorStorage = *startReductionPtr;
 		// *endReductionPtr = 0.5;
 		// if (!targetNpcInfo->exists()) return 1;
