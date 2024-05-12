@@ -16,6 +16,11 @@ TargetNpcInfo::TargetNpcInfo(intptr_t processBaseAddress)
 	targetBaseHandle = -1;
 }
 
+bool TargetNpcInfo::exists() const
+{
+	return targetBaseHandle != -1;
+}
+
 int TargetNpcInfo::getCoordinates(TargetNpcPosition positionIndex)
 {
 	Logger::debug("TARGET BASE = %p, ", this);

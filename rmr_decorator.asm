@@ -8,8 +8,10 @@ rmr_decorator proc
     lea rax, [r10  + 50h]
     push rax
     push rcx
+    push r8
     mov rcx, r8
     call getRootMotionReductionFactor
+    pop r8
     pop rcx
     pop rax
     movss xmm6, dword ptr [r8 + 04h]

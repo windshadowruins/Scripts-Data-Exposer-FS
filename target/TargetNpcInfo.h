@@ -24,6 +24,7 @@ struct TargetNpcInfo
 	int replayTargetIndex = 0;
 
 	TargetNpcInfo(intptr_t processBaseAddress);
+	bool exists() const;
 	int getCoordinates(TargetNpcPosition positionIndex);
 
 	CoordinatePointers updatePlayerCoordinates(intptr_t chrIns);

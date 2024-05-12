@@ -215,6 +215,11 @@ void checkRootMotionDecorator()
     // Copy assembly code to the target address
     memcpy(jumpAddress, asmCode, sizeof(asmCode));
     VirtualProtect(jumpAddress, sizeof(asmCode), oldProtect, &oldProtect);
+
+    tempFactorStorage = new float;
+    *tempFactorStorage = 0.42;
+    Logger::info("Temp Factor pointer is at %p \n", (void*)tempFactorStorage);
+
 }
 
 void initHooks() 
@@ -260,6 +265,7 @@ void onAttach()
 void onDetach()
 {
     delete targetNpcInfo;
+    delete tempFactorStorage;
     MH_DisableHook(MH_ALL_HOOKS);
     MH_Uninitialize();
 }
