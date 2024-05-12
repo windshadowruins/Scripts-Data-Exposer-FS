@@ -355,7 +355,7 @@ local CHR_FLAGS_1 = 0x530
 local NO_HIT_BIT_OFFSET = 3
 function SetChrDebugNoHit(noHit)
     if noHit ~= TRUE and noHit ~= FALSE then return end
-    act(WritePointerChain, CHR_INS_BASE, BIT, noHit, NO_HIT_BIT_OFFSET, CHR_FLAGS_1)
+        act(WritePointerChain, CHR_INS_BASE, BIT, noHit, NO_HIT_BIT_OFFSET, CHR_FLAGS_1)
 end
 
 function IsPlayer()
@@ -365,6 +365,8 @@ function IsPlayer()
     return FALSE
 end
 
+local CHR_ENTRY_LIST_START = 0x1F1D0
+local CHR_ENTRY_LIST_END = 0x1F1D8
 local SUPERARMOR_MODULE = 0x40
 local POISE = 0x10
 local UNK_FOR_POISE_TIMER = 0x14
@@ -393,7 +395,7 @@ function GetNpcThinkParamId()
     return env(TraversePointerChain, CHR_INS_BASE, SIGNED_INT, CHR_CTRL, CHR_MANIPULATOR, AI, NPC_THINK_ID)
 end
 
-local CANNOT_MOVE_ANIM_OFFSET
+local CANNOT_MOVE_ANIM_OFFSET = 0x24
 function GetCannotMoveAnim()
     local think = GetNpcThinkParamId()
     if think == INVALID or think == 0 then return INVALID end
@@ -410,4 +412,11 @@ local IS_CONSUMED_BYTE = 0x48
 local IS_CONSUMED_BIT_OFFSET = 7
 function SetItemNotConsumed(goodsId)
     act(SetParamValue, PARAM_EquipParamGoods, goodsId, IS_CONSUMED_BYTE, BIT, 0, IS_CONSUMED_BIT_OFFSET)
+end
+
+local FULL_PHYSICK = 250
+local EMPTY_PHYSICK = 251
+function RefillPhysick()
+    act(ESD_ReplaceTool, FULL_PHYSICK, FULL_PHYSICK)
+    act(ESD_ReplaceTool, EMPTY_PHYSICK, FULL_PHYSICK)
 end
