@@ -1,17 +1,15 @@
 ﻿#include "pch.h"
 #include "Logger.h"
-#include "../extensions/ExtensionHooks.h"
 #include "bullet/BulletPatch.h"
-#include "../extensions/ExtensionScanner.h"
 #include "tae/rootMotionReduction/RootMotionReductionPatch.h"
 #include "target/TargetNpcPatch.h"
-#include "../extensions/ExtensionMasks.h"
+#include "extensions/ExtensionScanner.h"
 #include "world/WorldInfo.h"
 
 
 extern intptr_t getProcessBase();
 
-void initTargetHooks()
+void initTargetHook()
 {
     // 48 8B 48 08 49 89 8D
     // for CE scanning

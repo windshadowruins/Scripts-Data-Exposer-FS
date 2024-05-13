@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-void initTargetHooks();
+void initTargetHook();
 void initCreateBulletHook();
 void initCharacterListHook();
 void initRootMotionReductionHook();

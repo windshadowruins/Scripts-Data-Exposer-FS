@@ -176,10 +176,10 @@
     <ClInclude Include="include\bullet\BulletInfo.h">
       <FileType>CppCode</FileType>
     </ClInclude>
-    <ClCompile Include="src\common\ExtensionHooks.cpp" />
+    <ClCompile Include="src\extensions\ExtensionHooks.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="src\common\ExtensionMasks.cpp" />
-    <ClCompile Include="src\common\ExtensionScanner.cpp" />
+    <ClCompile Include="src\extensions\ExtensionMasks.cpp" />
+    <ClCompile Include="src\extensions\ExtensionScanner.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -200,7 +200,7 @@
     <ClInclude Include="game\AOBScan.h" />
     <ClInclude Include="include\common\AOBScanCore.h" />
     <ClInclude Include="game\Emevd.h" />
-    <ClInclude Include="extensions\ExtensionScanner.h" />
+    <ClInclude Include="include\extensions\ExtensionScanner.h" />
     <ClInclude Include="game\HksState.h" />
     <ClInclude Include="game\ProcessData.h" />
     <ClInclude Include="game\ProcessStructs.h" />
@@ -240,9 +240,9 @@
     <ClInclude Include="include\tae\TaeEditor.h" />
     <ClInclude Include="target\TargetHksParams.h" />
     <ClInclude Include="include\target\TargetNpcInfo.h" />
-    <ClInclude Include="extensions\ActionInterpreter.h" />
-    <ClInclude Include="extensions\ExtensionHooks.h" />
-    <ClInclude Include="extensions\ExtensionMasks.h" />
+    <ClInclude Include="include\extensions\ActionInterpreter.h" />
+    <ClInclude Include="include\extensions\ExtensionHooks.h" />
+    <ClInclude Include="include\extensions\ExtensionMasks.h" />
     <ClInclude Include="include\world\WorldInfo.h" />
     <ClInclude Include="include\target\TargetNpcPatch.h" />
     <ClInclude Include="include\target\TargetNpcPosition.h" />

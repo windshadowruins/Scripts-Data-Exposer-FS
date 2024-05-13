@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
-#include "../extensions/ActionInterpreter.h"
 
+#include "../game/ProcessStructs.h"
 #include "common/CoordinatePointers.h"
 #include "world/WorldInfo.h"
 

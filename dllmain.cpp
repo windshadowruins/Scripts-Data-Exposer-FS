@@ -48,7 +48,7 @@ void initHooks()
     createHook(replacedHksAct, &actHookFunc, (void**)&hksAct);
 
     initRootMotionReductionHook();
-    initTargetHooks();
+    initTargetHook();
     initCreateBulletHook();
     initCharacterListHook();
     MH_EnableHook(MH_ALL_HOOKS);
