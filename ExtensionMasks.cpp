@@ -17,12 +17,12 @@ const unsigned char ROOT_MOTION_REDUCTION_FACTOR_ACCESS_AOB[] = {
 };
 
 constexpr char PLAYER_TARGET_MASK[] = ".......";
-constexpr char CREATE_BULLET__MASK[] = "...........................";
+constexpr char CREATE_BULLET_MASK[] = "...........................";
 constexpr char CHARACTER_LIST_MASK[] = "...................";
 constexpr char ROOT_MOTION_REDUCTION_MASK[] = "................";
 
 ExtensionRegister PLAYER_TARGET = {PLAYER_TARGET_AOB, PLAYER_TARGET_MASK};
-ExtensionRegister CREATE_BULLET = {CREATE_BULLET_AOB, CREATE_BULLET__MASK};
+ExtensionRegister CREATE_BULLET = {CREATE_BULLET_AOB, CREATE_BULLET_MASK};
 ExtensionRegister CHARACTER_LIST = {CHARACTER_LIST_AOB, CHARACTER_LIST_MASK};
 ExtensionRegister ROOT_MOTION_REDUCTION_FACTOR_ACCESS = {
 	ROOT_MOTION_REDUCTION_FACTOR_ACCESS_AOB, ROOT_MOTION_REDUCTION_MASK

@@ -36,12 +36,9 @@ void initTargetHooks()
     unsigned char* masmRoutineAddress = reinterpret_cast<unsigned char*>(allocatedMemory);
 
     unsigned char* start_of_next_instruction = jumpAddress + SIZE_OF_CALL_INSTRUCTION;
-    // int relativeOffset = reinterpret_cast<uintptr_t>(masmRoutineAddress) - reinterpret_cast<uintptr_t>(start_of_next_instruction);
     Logger::info("Pointer to Jump is %p \n", jumpAddress);
     Logger::info("Pointer to start of after-Jump instruction is %p \n", (void*)start_of_next_instruction);
-    // std::cout << "Offset to Decorator from jump is " << relativeOffset << std::endl;
     Logger::info("Pointer to Decorator is %p \n", (void*)masmRoutineAddress);
-    // Logger::debug("Double checking offset calculation %p \n", (void*) (reinterpret_cast<uintptr_t>(start_of_next_instruction) + relativeOffset));
 
 
     // Patch the offset into the call instruction
@@ -122,7 +119,6 @@ void initCharacterListHook()
     // 0F 10 00 0F 11 44 24 70 0F 10 48 10 0F 11 4D 80 48 83 3D
     // for CE scanning
     Logger::info("About to scan for character List...\n");
-    // void* worldChrManInvariant = AOBScanAddress(characterListAOB, characterListMask);
     void* worldChrManInvariant = scan(CHARACTER_LIST);
     intptr_t worldChrManInvariantAddress = (intptr_t)worldChrManInvariant;
     int worldChrManInvariantAddressOffset19 = *(int*)(worldChrManInvariantAddress + 19);
@@ -140,6 +136,8 @@ void initRootMotionReductionHook()
 
     // f3 0f 5c 00 f3 0f 5c 10 0f 29 74 24 30
     // for CE scanning after
+    Logger::info("About to scan for Root Motion Reduction access...\n");
+
     void* rmrAccessInvariant = scan(ROOT_MOTION_REDUCTION_FACTOR_ACCESS);
     intptr_t rmrAccessInvariantAddress = (intptr_t)rmrAccessInvariant;
     
