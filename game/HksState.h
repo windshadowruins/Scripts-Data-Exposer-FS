@@ -3,13 +3,9 @@
 #include "ProcessData.h"
 #include "../include/Logger.h"
 #include "tae/rootMotionReduction/RootMotionReductionHksParams.h"
+#include "../extensions/ActionInterpreter.h"
 #include "target/TargetHksParams.h"
-#include "world/ActionInterpreter.h"
 #include "world/WorldInfo.h"
-// #include "../tae/rootMotionReduction/RootMotionReductionHksParams.h"
-// #include "../world/WorldInfo.h"
-// #include "../target/TargetHksParams.h"
-// #include "../world/ActionInterpreter.h"
 
 enum EnvId 
 {

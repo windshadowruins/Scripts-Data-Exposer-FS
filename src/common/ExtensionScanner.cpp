@@ -2,7 +2,7 @@
 
 #include "Logger.h"
 #include "common/AOBScanCore.h"
-#include "world/ExtensionMasks.h"
+#include "../extensions/ExtensionMasks.h"
 
 void* scan(const ExtensionRegister& extension)
 {

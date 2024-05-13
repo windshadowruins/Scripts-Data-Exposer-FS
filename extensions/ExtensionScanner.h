@@ -1,4 +1,4 @@
 ﻿#pragma once
-#include "world/ExtensionMasks.h"
+#include "ExtensionMasks.h"
 
 void* scan(const ExtensionRegister& extension);

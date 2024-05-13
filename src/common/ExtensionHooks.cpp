@@ -1,11 +1,11 @@
 ﻿#include "pch.h"
 #include "Logger.h"
-#include "world/ExtensionHooks.h"
+#include "../extensions/ExtensionHooks.h"
 #include "bullet/BulletPatch.h"
-#include "common/ExtensionScanner.h"
+#include "../extensions/ExtensionScanner.h"
 #include "tae/rootMotionReduction/RootMotionReductionPatch.h"
 #include "target/TargetNpcPatch.h"
-#include "world/ExtensionMasks.h"
+#include "../extensions/ExtensionMasks.h"
 #include "world/WorldInfo.h"
 
 

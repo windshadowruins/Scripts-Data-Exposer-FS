@@ -6,14 +6,11 @@
 #include "game/HksState.h"
 #include "include/MinHook.h"
 #include "Logger.h"
-#include "bullet/BulletPatch.h"
 #include "game/ProcessData.h"
 #include "game/AOBScan.h"
 #include "world/WorldInfo.h"
 #include "include/ExposerConfig.h"
-#include "tae/rootMotionReduction/RootMotionReductionPatch.h"
-#include "target/TargetNpcPatch.h"
-#include "world/ExtensionHooks.h"
+#include "extensions/ExtensionHooks.h"
 
 
 #if _WIN64

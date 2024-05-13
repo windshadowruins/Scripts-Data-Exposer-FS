@@ -200,11 +200,12 @@
     <ClInclude Include="game\AOBScan.h" />
     <ClInclude Include="include\common\AOBScanCore.h" />
     <ClInclude Include="game\Emevd.h" />
-    <ClInclude Include="include\common\ExtensionScanner.h" />
+    <ClInclude Include="extensions\ExtensionScanner.h" />
     <ClInclude Include="game\HksState.h" />
     <ClInclude Include="game\ProcessData.h" />
     <ClInclude Include="game\ProcessStructs.h" />
     <ClInclude Include="game\TargetHksParams.h" />
+    <ClInclude Include="include\ExposerConfig.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\mem\aligned_alloc.h" />
     <ClInclude Include="include\mem\arch.h" />
@@ -239,9 +240,9 @@
     <ClInclude Include="include\tae\TaeEditor.h" />
     <ClInclude Include="target\TargetHksParams.h" />
     <ClInclude Include="include\target\TargetNpcInfo.h" />
-    <ClInclude Include="include\world\ActionInterpreter.h" />
-    <ClInclude Include="include\world\ExtensionHooks.h" />
-    <ClInclude Include="include\world\ExtensionMasks.h" />
+    <ClInclude Include="extensions\ActionInterpreter.h" />
+    <ClInclude Include="extensions\ExtensionHooks.h" />
+    <ClInclude Include="extensions\ExtensionMasks.h" />
     <ClInclude Include="include\world\WorldInfo.h" />
     <ClInclude Include="include\target\TargetNpcPatch.h" />
     <ClInclude Include="include\target\TargetNpcPosition.h" />
