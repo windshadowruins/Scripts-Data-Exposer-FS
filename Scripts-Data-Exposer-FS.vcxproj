@@ -169,13 +169,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\world\ActionInterpreter.cpp" />
+    <ClCompile Include="src\extensions\ActionInterpreter.cpp" />
     <ClCompile Include="src\bullet\BulletInfo.cpp" />
     <ClCompile Include="src\bullet\BulletLog.cpp" />
     <ClCompile Include="src\bullet\BulletPatch.cpp" />
     <ClInclude Include="include\bullet\BulletInfo.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClCompile Include="src\extensions\EnvironmentInterpreter.cpp" />
     <ClCompile Include="src\extensions\ExtensionHooks.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="src\extensions\ExtensionMasks.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="game\AOBScan.h" />
     <ClInclude Include="include\common\AOBScanCore.h" />
     <ClInclude Include="game\Emevd.h" />
+    <ClInclude Include="include\extensions\EnvironmentInterpreter.h" />
     <ClInclude Include="include\extensions\ExtensionScanner.h" />
     <ClInclude Include="game\HksState.h" />
     <ClInclude Include="game\ProcessData.h" />

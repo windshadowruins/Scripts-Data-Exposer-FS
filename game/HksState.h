@@ -3,6 +3,7 @@
 #include "ProcessData.h"
 #include "../include/Logger.h"
 #include "extensions/ActionInterpreter.h"
+#include "extensions/EnvironmentInterpreter.h"
 #include "tae/rootMotionReduction/RootMotionReductionHksParams.h"
 #include "target/TargetHksParams.h"
 #include "world/WorldInfo.h"
@@ -249,10 +250,16 @@ int newEnvFunc(void** chrInsPtr, int envId, HksState* hksState)
     }
     case int(TargetEnvId::TARGET_NPC):
     {
-        if (!hksHasParamInt(hksState, 2))
-            return INVALID;
-        int positionIndex = hks_luaL_checkint(hksState, 2);
-        return targetNpcInfo->getCoordinates(static_cast<TargetNpcPosition>(positionIndex));
+        return interpretEnv(chrInsPtr, hksState);
+        // if (!hksHasParamInt(hksState, 2))
+        //     return INVALID;
+        // int positionIndex = hks_luaL_checkint(hksState, 2);
+        // if (positionIndex == 4)
+        // {
+        //     CoordinatePointers playerCoordinatePointers = targetNpcInfo->updatePlayerCoordinates(chrIns);
+        //     return targetNpcInfo->distanceToTarget(TODO);
+        // }
+        // return targetNpcInfo->getCoordinate(static_cast<TargetNpcPosition>(positionIndex));
     }
     }
 

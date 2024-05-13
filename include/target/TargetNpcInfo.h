@@ -25,7 +25,9 @@ struct TargetNpcInfo
 
 	TargetNpcInfo(intptr_t processBaseAddress);
 	bool exists() const;
-	int getCoordinates(TargetNpcPosition positionIndex);
+	float distanceToTarget(CoordinatePointers& p) const;
+	float getCoordinate(TargetNpcPosition positionIndex);
+	CoordinatePointers getCoordinates();
 
 	CoordinatePointers updatePlayerCoordinates(intptr_t chrIns);
 

@@ -18,21 +18,39 @@ TargetNpcInfo::TargetNpcInfo(intptr_t processBaseAddress)
 
 bool TargetNpcInfo::exists() const
 {
-	return targetBaseHandle != -1;
+	std::vector<intptr_t> allCharacters = allLoadedCharacters(processBaseAddress);
+	return isValidCharacter(targetBaseHandle, allCharacters);
 }
 
-int TargetNpcInfo::getCoordinates(TargetNpcPosition positionIndex)
+float TargetNpcInfo::distanceToTarget(CoordinatePointers& p) const
+{
+	if (!exists()) return -1;
+	return (float) sqrt(pow(*p.x - x, 2) + pow(*p.y - y, 2) + pow(*p.z - z, 2));
+}
+
+float TargetNpcInfo::getCoordinate(TargetNpcPosition positionIndex)
 {
 	Logger::debug("TARGET BASE = %p, ", this);
 	Logger::debug("TARGET BASE X = %p\n", &x);
 	Logger::debug("TARGET LOCATION = (%f, %f, %f)\n", x, y, z);
 	switch (positionIndex)
 	{
-	case TARGET_NPC_X: return *((intptr_t*)&x) & 0xFFFFFFFF;
-	case TARGET_NPC_Y: return *((intptr_t*)&y) & 0xFFFFFFFF;
-	case TARGET_NPC_Z: return *((intptr_t*)&z) & 0xFFFFFFFF;
+	// case TARGET_NPC_X: return *((intptr_t*)&x) & 0xFFFFFFFF;
+	// case TARGET_NPC_Y: return *((intptr_t*)&y) & 0xFFFFFFFF;
+	// case TARGET_NPC_Z: return *((intptr_t*)&z) & 0xFFFFFFFF;
+	case TARGET_NPC_X: return x;
+	case TARGET_NPC_Y: return y;
+	case TARGET_NPC_Z: return z;
 	default: return mem::prot_flags::INVALID;
 	}
+}
+
+CoordinatePointers TargetNpcInfo::getCoordinates()
+{
+	Logger::debug("TARGET BASE = %p, ", this);
+	Logger::debug("TARGET BASE X = %p\n", &x);
+	Logger::debug("TARGET LOCATION = (%f, %f, %f)\n", x, y, z);
+	return CoordinatePointers{ &x, &y, &z };
 }
 
 CoordinatePointers TargetNpcInfo::updatePlayerCoordinates(intptr_t chrIns)
@@ -197,15 +215,12 @@ std::vector<intptr_t> TargetNpcInfo::allLoadedCharacters(intptr_t processBase)
 
 	intptr_t numLoadedCharacters = (charactersEnd - charactersStart) / 8;
 	std::vector<intptr_t> characterAddresses(numLoadedCharacters);
-	Logger::debug("%d characters loaded \n", numLoadedCharacters);
+	// Logger::debug("%d characters loaded \n", numLoadedCharacters);
 	for (intptr_t targetAddress = charactersStart; targetAddress <= charactersEnd - 8; targetAddress += 8)
 	{
 		// Logger::debug("Character base handle: %p \n", reinterpret_cast<unsigned char*>(targetAddress));
 		intptr_t actualAddress = *(intptr_t*)targetAddress;
 		characterAddresses.push_back(actualAddress);
-		// float* targetSpeedModifier_ptr = (float*)(*(intptr_t*)(*(intptr_t*)(actualAddress + 0x190) + 0x28) + 0x17C8);
-		// Logger::debug("Modifier is : %f", *targetSpeedModifier_ptr);
-		// *targetSpeedModifier_ptr = 25.0;
 	}
 	return characterAddresses;
 }
