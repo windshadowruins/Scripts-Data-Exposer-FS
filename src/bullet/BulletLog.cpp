@@ -3,6 +3,7 @@
 #include "bullet/BulletLog.h"
 
 #include "Logger.h"
+#include "common/CoordinatePointers.h"
 
 BulletLog::BulletLog(intptr_t processBaseHandle): numBullets(0), processBaseHandle(processBaseHandle)
 {

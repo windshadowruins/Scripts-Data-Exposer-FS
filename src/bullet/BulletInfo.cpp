@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "bullet/BulletInfo.h"
 
+#include "common/CoordinatePointers.h"
+
 BulletInfo::BulletInfo(intptr_t bulletBaseAddress): bulletBaseHandle(bulletBaseAddress)
 {
 	x = y = z = 42;

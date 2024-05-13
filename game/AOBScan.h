@@ -3,7 +3,7 @@
 #include "../include/mem/pattern.h"
 #include "../include/mem/simd_scanner.h"
 #include "ProcessData.h"
-#include "AOBScanCore.h"
+#include "common/AOBScanCore.h"
 
 extern void GetText()
 {

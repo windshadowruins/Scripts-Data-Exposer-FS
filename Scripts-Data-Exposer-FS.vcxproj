@@ -169,38 +169,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ActionInterpreter.cpp" />
-    <ClCompile Include="BulletInfo.cpp" />
-    <ClCompile Include="BulletLog.cpp" />
-    <ClCompile Include="BulletPatch.cpp" />
-    <ClInclude Include="bullet\BulletInfo.h">
+    <ClCompile Include="src\world\ActionInterpreter.cpp" />
+    <ClCompile Include="src\bullet\BulletInfo.cpp" />
+    <ClCompile Include="src\bullet\BulletLog.cpp" />
+    <ClCompile Include="src\bullet\BulletPatch.cpp" />
+    <ClInclude Include="include\bullet\BulletInfo.h">
       <FileType>CppCode</FileType>
     </ClInclude>
-    <ClCompile Include="ExtensionHooks.cpp" />
+    <ClCompile Include="src\common\ExtensionHooks.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="ExtensionMasks.cpp" />
-    <ClCompile Include="ExtensionScanner.cpp" />
+    <ClCompile Include="src\common\ExtensionMasks.cpp" />
+    <ClCompile Include="src\common\ExtensionScanner.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RootMotionReductionPatch.cpp" />
-    <ClCompile Include="TaeEditor.cpp" />
-    <ClCompile Include="TargetNpcInfo.cpp" />
-    <ClCompile Include="WorldInfo.cpp" />
-    <ClCompile Include="TargetNpcPatch.cpp" />
+    <ClCompile Include="src\tae\rootMotionReduction\RootMotionReductionPatch.cpp" />
+    <ClCompile Include="src\tae\TaeEditor.cpp" />
+    <ClCompile Include="src\target\TargetNpcInfo.cpp" />
+    <ClCompile Include="src\world\WorldInfo.cpp" />
+    <ClCompile Include="src\target\TargetNpcPatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AOBScan.h" />
-    <ClInclude Include="bullet\BulletLog.h" />
-    <ClInclude Include="bullet\BulletPatch.h" />
+    <ClInclude Include="include\bullet\BulletLog.h" />
+    <ClInclude Include="include\bullet\BulletPatch.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="game\AOBScan.h" />
-    <ClInclude Include="game\AOBScanCore.h" />
+    <ClInclude Include="include\common\AOBScanCore.h" />
     <ClInclude Include="game\Emevd.h" />
-    <ClInclude Include="game\ExtensionScanner.h" />
+    <ClInclude Include="include\common\ExtensionScanner.h" />
     <ClInclude Include="game\HksState.h" />
     <ClInclude Include="game\ProcessData.h" />
     <ClInclude Include="game\ProcessStructs.h" />
@@ -231,31 +231,32 @@
     <ClInclude Include="include\mem\stub.h" />
     <ClInclude Include="include\mem\utils.h" />
     <ClInclude Include="include\MinHook.h" />
+    <ClInclude Include="include\target\TargetHksParams.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="game\CoordinatePointers.h" />
-    <ClInclude Include="tae\rootMotionReduction\RootMotionReductionHksParams.h" />
-    <ClInclude Include="tae\rootMotionReduction\RootMotionReductionPatch.h" />
-    <ClInclude Include="tae\TaeEditor.h" />
+    <ClInclude Include="include\common\CoordinatePointers.h" />
+    <ClInclude Include="include\tae\rootMotionReduction\RootMotionReductionHksParams.h" />
+    <ClInclude Include="include\tae\rootMotionReduction\RootMotionReductionPatch.h" />
+    <ClInclude Include="include\tae\TaeEditor.h" />
     <ClInclude Include="target\TargetHksParams.h" />
-    <ClInclude Include="target\TargetNpcInfo.h" />
-    <ClInclude Include="world\ActionInterpreter.h" />
-    <ClInclude Include="world\ExtensionHooks.h" />
-    <ClInclude Include="world\ExtensionMasks.h" />
-    <ClInclude Include="world\WorldInfo.h" />
-    <ClInclude Include="target\TargetNpcPatch.h" />
-    <ClInclude Include="target\TargetNpcPosition.h" />
-    <ClInclude Include="target\testheader.h" />
+    <ClInclude Include="include\target\TargetNpcInfo.h" />
+    <ClInclude Include="include\world\ActionInterpreter.h" />
+    <ClInclude Include="include\world\ExtensionHooks.h" />
+    <ClInclude Include="include\world\ExtensionMasks.h" />
+    <ClInclude Include="include\world\WorldInfo.h" />
+    <ClInclude Include="include\target\TargetNpcPatch.h" />
+    <ClInclude Include="include\target\TargetNpcPosition.h" />
+    <ClInclude Include="include\target\testheader.h" />
     <ClInclude Include="target\ExposerConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\mem\cpp.hint" />
-    <MASM Include="bullet_decorator.asm" />
-    <MASM Include="target_decorator.asm">
+    <MASM Include="src\bullet\asm\bullet_decorator.asm" />
+    <MASM Include="src\target\asm\target_decorator.asm">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </MASM>
-    <MASM Include="rmr_decorator.asm">
+    <MASM Include="src\tae\rootMotionReduction\asm\rmr_decorator.asm">
       <FileType>Document</FileType>
     </MASM>
   </ItemGroup>

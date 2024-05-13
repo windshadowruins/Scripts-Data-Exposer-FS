@@ -5,8 +5,8 @@
 #include <ostream>
 
 #include "Logger.h"
+#include "common/CoordinatePointers.h"
 #include "mem/prot_flags.h"
-#include "game/CoordinatePointers.h"
 #include "world/WorldInfo.h"
 #include "target/TargetNpcPosition.h"
 

@@ -1,8 +1,8 @@
 ﻿#include "pch.h"
-#include "game/ExtensionScanner.h"
 
 #include "Logger.h"
-#include "game/AOBScanCore.h"
+#include "common/AOBScanCore.h"
+#include "world/ExtensionMasks.h"
 
 void* scan(const ExtensionRegister& extension)
 {

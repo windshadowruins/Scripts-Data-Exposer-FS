@@ -5,7 +5,7 @@
 
 struct BulletLog
 {
-	int numBullets;
+	size_t numBullets;
 	std::vector<BulletInfo> bullets;
 	intptr_t processBaseHandle;
 

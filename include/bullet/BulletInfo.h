@@ -1,9 +1,8 @@
 #pragma once
-#include "pch.h"
+#include "../pch.h"
 
 #include <vector>
-
-#include "../game/CoordinatePointers.h"
+#include "common/CoordinatePointers.h"
 
 struct BulletInfo
 {

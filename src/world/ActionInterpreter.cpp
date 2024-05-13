@@ -1,5 +1,7 @@
 ﻿#include "pch.h"
 #include "world/ActionInterpreter.h"
+
+#include "common/CoordinatePointers.h"
 #include "world/WorldInfo.h"
 
 extern bool hksHasParamInt(HksState* hksState, int paramIndex);
@@ -28,6 +30,6 @@ void interpretTeleportToBullet(void** chrInsPtr, HksState* hksState)
 void interpretTae(void** chrInsPtr, HksState* hksState)
 {
     if (!hksHasParamInt(hksState, 2)) return;
-    float rootMotionReductionFactor = hks_luaL_checkint(hksState, 2) / 1000.;
+    float rootMotionReductionFactor = hks_luaL_checkint(hksState, 2) / 1000.0f;
     taeEditor->updateRootMotion(rootMotionReductionFactor);
 }

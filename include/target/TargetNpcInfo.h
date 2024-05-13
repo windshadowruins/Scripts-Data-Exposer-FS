@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <vector>
 
-#include "../game/CoordinatePointers.h"
 #include "TargetNpcPosition.h"
+#include "common/CoordinatePointers.h"
 
 static const int DEFAULT_COORDINATES = 42;
 static const int SIZE_OF_CALL_INSTRUCTION = 5;
