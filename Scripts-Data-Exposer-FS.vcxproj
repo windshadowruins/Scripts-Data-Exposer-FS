@@ -236,6 +236,7 @@
     <ClInclude Include="tae\rootMotionReduction\RootMotionReductionHksParams.h" />
     <ClInclude Include="tae\rootMotionReduction\RootMotionReductionPatch.h" />
     <ClInclude Include="tae\TaeEditor.h" />
+    <ClInclude Include="target\TargetHksParams.h" />
     <ClInclude Include="target\TargetNpcInfo.h" />
     <ClInclude Include="world\ActionInterpreter.h" />
     <ClInclude Include="world\ExtensionHooks.h" />
