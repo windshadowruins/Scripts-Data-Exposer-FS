@@ -14,13 +14,9 @@ extern intptr_t getProcessBase();
 
 void initTargetHooks()
 {
-    // const unsigned char* targetStructureAOB = PLAYER_TARGET;
-    // const char* targetStructureMask = ".......";
-    // const char* targetStructureMask = mask(targetStructureAOB).c_str();
     // 48 8B 48 08 49 89 8D
     // for CE scanning
     Logger::info("About to scan for target structure...\n");
-    // void* targetStructureMoveInstruction = AOBScanAddress(targetStructureAOB, targetStructureMask);
     void* targetStructureMoveInstruction = scan(PLAYER_TARGET);
 
     Logger::info("Target structure code location: %p\n", targetStructureMoveInstruction);
@@ -81,19 +77,9 @@ void initCreateBulletHook()
     // 48 B9 30 4F 34 3C FF
     // For searching hook
 
-    // const unsigned char* createBulletAOB = CREATE_BULLET;
-    // const char* createBulletMask = "...........................";
-    // const char* createBulletMask = mask(createBulletAOB).c_str();
-    // void* createBulletInvariant = AOBScanAddress(createBulletAOB, createBulletMask);
     Logger::info("About to scan for Create Bullet...\n");
     void* createBulletInvariant = scan(CREATE_BULLET);
     intptr_t createBulletInvariantAddress = (intptr_t)createBulletInvariant;
-    // mov rcx, <address>
-    // nop...
-    // unsigned char asmCode[] = {
-    //     0x48, 0xB9, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xD1, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
-    //     0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
- //    };
     unsigned char asmCode[] = {
         0x48, 0xB9, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xD1, 0x90, 0x90, 0x90, 0x90, };
     unsigned char* jumpAddress = reinterpret_cast<unsigned char*>(createBulletInvariant);
@@ -135,13 +121,10 @@ void initCharacterListHook()
 {
     // 0F 10 00 0F 11 44 24 70 0F 10 48 10 0F 11 4D 80 48 83 3D
     // for CE scanning
-    // const unsigned char* characterListAOB = CHARACTER_LIST;
-    // const char* characterListMask = "...................";
-    // const char* characterListMask = mask(characterListAOB).c_str();
     Logger::info("About to scan for character List...\n");
     // void* worldChrManInvariant = AOBScanAddress(characterListAOB, characterListMask);
     void* worldChrManInvariant = scan(CHARACTER_LIST);
-    int64_t worldChrManInvariantAddress = (int64_t)worldChrManInvariant;
+    intptr_t worldChrManInvariantAddress = (intptr_t)worldChrManInvariant;
     int worldChrManInvariantAddressOffset19 = *(int*)(worldChrManInvariantAddress + 19);
     worldChrManAddress = (worldChrManInvariantAddress + 24 + worldChrManInvariantAddressOffset19);
     Logger::info("WORLD_CHR_MAIN = %p\n", reinterpret_cast<unsigned char*>(worldChrManInvariantAddress));
@@ -157,17 +140,6 @@ void initRootMotionReductionHook()
 
     // f3 0f 5c 00 f3 0f 5c 10 0f 29 74 24 30
     // for CE scanning after
-    // const unsigned char* rmrAccessAOB = ROOT_MOTION_REDUCTION_FACTOR_ACCESS;
-    // const char* rmrAccessMask = "................";
-    // const char* rmrAccessMask = mask(rmrAccessAOB).c_str();
-    // Logger::info("About to scan for Root Motion Reduction access code...\n");
-    // void* rmrAccessInvariant = AOBScanAddress(rmrAccessAOB, rmrAccessMask);
-    // if (!rmrAccessInvariant)
-    // {
-    //     Logger::error("Error did not find code invariant");
-    //     return;
-    // }
-    // int64_t rmrAccessInvariantAddress = (int64_t)rmrAccessInvariant;
     void* rmrAccessInvariant = scan(ROOT_MOTION_REDUCTION_FACTOR_ACCESS);
     intptr_t rmrAccessInvariantAddress = (intptr_t)rmrAccessInvariant;
     
@@ -181,9 +153,7 @@ void initRootMotionReductionHook()
     unsigned char* start_of_next_instruction = jumpAddress + SIZE_OF_CALL_INSTRUCTION;
     unsigned char* masmRoutineAddress = reinterpret_cast<unsigned char*>(allocatedMemory);
     Logger::info("Pointer to Jump from is %p \n", jumpAddress);
-    // Logger::info("Pointer to start of after-Jump instruction is %p \n", (void*)start_of_next_instruction);
     Logger::info("Pointer to Decorator is %p \n", (void*)masmRoutineAddress);
-    // Logger::info("Offset is %p \n", (void*)masmRoutineAddress);
     for (int i = 0; i <= ADDRESS_SIZE_IN_BYTES - 1; ++i) {
         asmCode[i + 5] = (reinterpret_cast<uintptr_t>(allocatedMemory) >> (i * 8)) & 0xFF;
     }
