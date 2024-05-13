@@ -13,7 +13,7 @@
 #include "include/ExposerConfig.h"
 #include "tae/rootMotionReduction/RootMotionReductionPatch.h"
 #include "target/TargetNpcPatch.h"
-#include "world/CustomFunctionalityHooks.h"
+#include "world/ExtensionHooks.h"
 
 
 #if _WIN64

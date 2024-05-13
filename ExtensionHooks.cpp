@@ -1,12 +1,12 @@
 ﻿#include "pch.h"
-#include <Windows.h>
-#include <Psapi.h>
-
 #include "Logger.h"
+#include "world/ExtensionHooks.h"
 #include "bullet/BulletPatch.h"
 #include "game/AOBScanCore.h"
+#include "game/ExtensionScanner.h"
 #include "tae/rootMotionReduction/RootMotionReductionPatch.h"
 #include "target/TargetNpcPatch.h"
+#include "world/ExtensionMasks.h"
 #include "world/WorldInfo.h"
 
 
@@ -14,12 +14,14 @@ extern intptr_t getProcessBase();
 
 void initTargetHooks()
 {
-    const unsigned char targetStructureAOB[] = { 0x48, 0x8B, 0x48, 0x08, 0x49, 0x89, 0x8D };
-    const char* targetStructureMask = ".......";
+    // const unsigned char* targetStructureAOB = PLAYER_TARGET;
+    // const char* targetStructureMask = ".......";
+    // const char* targetStructureMask = mask(targetStructureAOB).c_str();
     // 48 8B 48 08 49 89 8D
     // for CE scanning
     Logger::info("About to scan for target structure...\n");
-    void* targetStructureMoveInstruction = AOBScanAddress(targetStructureAOB, targetStructureMask);
+    // void* targetStructureMoveInstruction = AOBScanAddress(targetStructureAOB, targetStructureMask);
+    void* targetStructureMoveInstruction = scan(PLAYER_TARGET);
 
     Logger::info("Target structure code location: %p\n", targetStructureMoveInstruction);
     // Insert Jump
@@ -79,9 +81,12 @@ void initCreateBulletHook()
     // 48 B9 30 4F 34 3C FF
     // For searching hook
 
-    const unsigned char createBulletAOB[] = { 0xF3, 0x0F, 0x11, 0xB3, 0x14, 0x0B, 0x00, 0x00, 0xF3, 0x0F, 0x11, 0xB3, 0x18, 0x0B, 0x00, 0x00, 0x0F, 0x28, 0x74, 0x24, 0x40, 0x48, 0x83, 0xC4, 0x50, 0x5B, 0xC3 };
-    const char* createBulletMask = "...........................";
-    void* createBulletInvariant = AOBScanAddress(createBulletAOB, createBulletMask);
+    // const unsigned char* createBulletAOB = CREATE_BULLET;
+    // const char* createBulletMask = "...........................";
+    // const char* createBulletMask = mask(createBulletAOB).c_str();
+    // void* createBulletInvariant = AOBScanAddress(createBulletAOB, createBulletMask);
+    Logger::info("About to scan for Create Bullet...\n");
+    void* createBulletInvariant = scan(CREATE_BULLET);
     intptr_t createBulletInvariantAddress = (intptr_t)createBulletInvariant;
     // mov rcx, <address>
     // nop...
@@ -130,10 +135,12 @@ void initCharacterListHook()
 {
     // 0F 10 00 0F 11 44 24 70 0F 10 48 10 0F 11 4D 80 48 83 3D
     // for CE scanning
-    const unsigned char characterListAOB[] = { 0x0F, 0x10, 0x00, 0x0F, 0x11, 0x44, 0x24, 0x70, 0x0F, 0x10, 0x48, 0x10, 0x0F, 0x11, 0x4D, 0x80, 0x48, 0x83, 0x3D };
-    const char* characterListMask = "...................";
+    // const unsigned char* characterListAOB = CHARACTER_LIST;
+    // const char* characterListMask = "...................";
+    // const char* characterListMask = mask(characterListAOB).c_str();
     Logger::info("About to scan for character List...\n");
-    void* worldChrManInvariant = AOBScanAddress(characterListAOB, characterListMask);
+    // void* worldChrManInvariant = AOBScanAddress(characterListAOB, characterListMask);
+    void* worldChrManInvariant = scan(CHARACTER_LIST);
     int64_t worldChrManInvariantAddress = (int64_t)worldChrManInvariant;
     int worldChrManInvariantAddressOffset19 = *(int*)(worldChrManInvariantAddress + 19);
     worldChrManAddress = (worldChrManInvariantAddress + 24 + worldChrManInvariantAddressOffset19);
@@ -150,16 +157,19 @@ void initRootMotionReductionHook()
 
     // f3 0f 5c 00 f3 0f 5c 10 0f 29 74 24 30
     // for CE scanning after
-    const unsigned char rmrAccessAOB[] = { 0x48, 0x8d, 0x44, 0x24, 0x50, 0xf3, 0x41, 0x0f, 0x10, 0x70, 0x04, 0xf3, 0x41, 0x0f, 0x5c, 0x30, 0x0f, 0x29, 0x7c, 0x24, 0x20 };
-    const char* rmrAccessMask = "................";
-    Logger::info("About to scan for Root Motion Reduction access code...\n");
-    void* rmrAccessInvariant = AOBScanAddress(rmrAccessAOB, rmrAccessMask);
-    if (!rmrAccessInvariant)
-    {
-        Logger::error("Error did not find code invariant");
-        return;
-    }
-    int64_t rmrAccessInvariantAddress = (int64_t)rmrAccessInvariant;
+    // const unsigned char* rmrAccessAOB = ROOT_MOTION_REDUCTION_FACTOR_ACCESS;
+    // const char* rmrAccessMask = "................";
+    // const char* rmrAccessMask = mask(rmrAccessAOB).c_str();
+    // Logger::info("About to scan for Root Motion Reduction access code...\n");
+    // void* rmrAccessInvariant = AOBScanAddress(rmrAccessAOB, rmrAccessMask);
+    // if (!rmrAccessInvariant)
+    // {
+    //     Logger::error("Error did not find code invariant");
+    //     return;
+    // }
+    // int64_t rmrAccessInvariantAddress = (int64_t)rmrAccessInvariant;
+    void* rmrAccessInvariant = scan(ROOT_MOTION_REDUCTION_FACTOR_ACCESS);
+    intptr_t rmrAccessInvariantAddress = (intptr_t)rmrAccessInvariant;
     
     unsigned char asmCode[] = {
     0x49, 0x89, 0xE2, 0x48, 0xB9, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xD1, 0x90, };

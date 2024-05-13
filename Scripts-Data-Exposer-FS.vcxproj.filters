@@ -48,7 +48,13 @@
     <ClCompile Include="ActionInterpreter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CustomFunctionalityHooks.cpp">
+    <ClCompile Include="ExtensionHooks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtensionMasks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtensionScanner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,10 +206,16 @@
     <ClInclude Include="world\ActionInterpreter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="world\CustomFunctionalityHooks.h">
+    <ClInclude Include="world\ExtensionHooks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\AOBScanCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="world\ExtensionMasks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ExtensionScanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
