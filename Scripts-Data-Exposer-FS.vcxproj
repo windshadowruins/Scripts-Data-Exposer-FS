@@ -54,6 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -170,21 +171,45 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\extensions\ActionInterpreter.cpp" />
+    <ClCompile Include="src\bullet\BulletInfo.cpp" />
+    <ClCompile Include="src\bullet\BulletLog.cpp" />
+    <ClCompile Include="src\bullet\BulletPatch.cpp" />
+    <ClInclude Include="include\bullet\BulletInfo.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClCompile Include="src\extensions\EnvironmentInterpreter.cpp" />
+    <ClCompile Include="src\extensions\ExtensionHooks.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="src\extensions\ExtensionMasks.cpp" />
+    <ClCompile Include="src\extensions\ExtensionScanner.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tae\rootMotionReduction\RootMotionReductionPatch.cpp" />
+    <ClCompile Include="src\tae\TaeEditor.cpp" />
+    <ClCompile Include="src\target\TargetNpcInfo.cpp" />
+    <ClCompile Include="src\world\WorldInfo.cpp" />
+    <ClCompile Include="src\target\TargetNpcPatch.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AOBScan.h" />
+    <ClInclude Include="include\bullet\BulletLog.h" />
+    <ClInclude Include="include\bullet\BulletPatch.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="game\AOBScan.h" />
+    <ClInclude Include="include\common\AOBScanCore.h" />
     <ClInclude Include="game\Emevd.h" />
+    <ClInclude Include="include\extensions\EnvironmentInterpreter.h" />
+    <ClInclude Include="include\extensions\ExtensionScanner.h" />
     <ClInclude Include="game\HksState.h" />
     <ClInclude Include="game\ProcessData.h" />
     <ClInclude Include="game\ProcessStructs.h" />
+    <ClInclude Include="game\TargetHksParams.h" />
+    <ClInclude Include="include\ExposerConfig.h" />
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\mem\aligned_alloc.h" />
     <ClInclude Include="include\mem\arch.h" />
@@ -212,15 +237,41 @@
     <ClInclude Include="include\mem\utils.h" />
     <ClInclude Include="include\MinHook.h" />
     <ClInclude Include="include\PointerChain.h" />
+=======
+    <ClInclude Include="include\target\TargetHksParams.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="include\common\CoordinatePointers.h" />
+    <ClInclude Include="include\tae\rootMotionReduction\RootMotionReductionHksParams.h" />
+    <ClInclude Include="include\tae\rootMotionReduction\RootMotionReductionPatch.h" />
+    <ClInclude Include="include\tae\TaeEditor.h" />
+    <ClInclude Include="target\TargetHksParams.h" />
+    <ClInclude Include="include\target\TargetNpcInfo.h" />
+    <ClInclude Include="include\extensions\ActionInterpreter.h" />
+    <ClInclude Include="include\extensions\ExtensionHooks.h" />
+    <ClInclude Include="include\extensions\ExtensionMasks.h" />
+    <ClInclude Include="include\world\WorldInfo.h" />
+    <ClInclude Include="include\target\TargetNpcPatch.h" />
+    <ClInclude Include="include\target\TargetNpcPosition.h" />
+    <ClInclude Include="include\target\testheader.h" />
+    <ClInclude Include="target\ExposerConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\mem\cpp.hint" />
+    <MASM Include="src\bullet\asm\bullet_decorator.asm" />
+    <MASM Include="src\target\asm\target_decorator.asm">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </MASM>
+    <MASM Include="src\tae\rootMotionReduction\asm\rmr_decorator.asm">
+      <FileType>Document</FileType>
+    </MASM>
   </ItemGroup>
   <ItemGroup>
     <Text Include="include\mem\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
   </ImportGroup>
 </Project>

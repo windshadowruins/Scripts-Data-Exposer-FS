@@ -325,7 +325,6 @@ bool (*emevdSystemControlFlow)(void* unk1, void* unk2, CSEmkEventIns* event);
 
 bool (*emevdSystemFunction)(void* unk1, void* unk2, CSEmkEventIns* event);
 
-
 //ESD
 
 //GAME DEBUG
