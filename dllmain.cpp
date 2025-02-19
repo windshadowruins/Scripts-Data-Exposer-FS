@@ -1,14 +1,16 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
 #include <Windows.h>
-#include <iostream>
 #include <vector>
 #include <Psapi.h>
 #include "game/HksState.h"
 #include "include/MinHook.h"
-#include "include/Logger.h"
+#include "Logger.h"
 #include "game/ProcessData.h"
 #include "game/AOBScan.h"
+#include "world/WorldInfo.h"
+#include "include/ExposerConfig.h"
+#include "extensions/ExtensionHooks.h"
 
 
 #if _WIN64
@@ -16,6 +18,7 @@
 #else
 #pragma comment(lib, "libMinHook-x86-v141-md.lib")
 #endif
+
 
 #if _DEBUG
 #define DEBUG true
@@ -41,7 +44,11 @@ static inline void printAddresses()
 #else
 static inline void printAddresses() {};
 #endif
+=======
+#define OPEN_CONSOLE_ON_START 1
 
+void* text;
+size_t text_size;
 
 static void initAddresses()
 {
@@ -66,12 +73,18 @@ void initHooks()
 {
     createHook("hksSetCGlobals", replacedHksSetCGlobals, &hksSetCGlobalsHookFunc, (void**)&hksSetCGlobals);
 
+    initRootMotionReductionHook();
+    initTargetHook();
+    initCreateBulletHook();
+    initCharacterListHook();
     MH_EnableHook(MH_ALL_HOOKS);
 }
 
 void onAttach()
 {
     if (DEBUG && GetConsoleWindow() == NULL) 
+=======
+    if (OPEN_CONSOLE_ON_START && GetConsoleWindow() == NULL && buildType == BuildType::DEBUG) 
     {
         AllocConsole();
         freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
@@ -97,8 +110,10 @@ void onAttach()
     Logger::debug("Finished onAttach");
 }
 
-void onDetach() 
+void onDetach()
 {
+    delete targetNpcInfo;
+    delete taeEditor;
     MH_DisableHook(MH_ALL_HOOKS);
     MH_Uninitialize();
 }

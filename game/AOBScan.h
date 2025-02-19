@@ -2,7 +2,6 @@
 #include "../include/mem/mem.h"
 #include "../include/mem/pattern.h"
 #include "../include/mem/simd_scanner.h"
-#include "../include/Logger.h"
 #include "ProcessData.h"
 #include <iomanip>
 #include <sstream>
@@ -118,6 +117,8 @@ inline void* AOBScanCodeCall(const unsigned char* AOBString, const char* AOBMask
     uint8_t* addr = static_cast<uint8_t*>(AOBScanAddress(AOBString, AOBMask));
     return addr != nullptr ? reinterpret_cast<void*>(addr + *reinterpret_cast<int32_t*>(addr + OpOffset + 1) + 5 + FuncStartToOpOffset) : nullptr;
 }
+=======
+#include "common/AOBScanCore.h"
 
 extern void GetText()
 {

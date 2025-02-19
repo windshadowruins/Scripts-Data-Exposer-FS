@@ -2,7 +2,15 @@
 #include <string>
 #include "ProcessData.h"
 #include "../include/Logger.h"
+
 #include "../include/PointerChain.h"
+=======
+#include "extensions/ActionInterpreter.h"
+#include "extensions/EnvironmentInterpreter.h"
+#include "tae/rootMotionReduction/RootMotionReductionHksParams.h"
+#include "target/TargetHksParams.h"
+#include "world/WorldInfo.h"
+
 
 enum EnvId
 {
@@ -25,8 +33,11 @@ enum ActId
 
 };
 
+
 //TODO Change all ugly pointer traversals with PointerChain
 
+
+=======
 
 //hks functions return invalid when something is wrong, so we'll do the same with our custom funcs
 constexpr float INVALID = -1;
@@ -278,7 +289,10 @@ std::pair<const char*, float> newEnvFunc(void** chrInsPtr, int envId, HksState* 
 
         return std::pair(OK, getValueFromAddress(valAddr, valType, bitOffset));
     }
-
+    case int(TargetEnvId::TARGET_NPC):
+    {
+        return interpretEnv(chrInsPtr, hksState);
+    }
     }
 
     return std::pair(NO_ACT, INVALID);
@@ -442,6 +456,21 @@ static const char* newActFunc(void** chrInsPtr, int actId, HksState* hksState)
         return OK;
     }
 
+    case int(TargetActId::TELEPORT_TO_TARGET):
+    {
+        interpretTeleport(chrInsPtr, hksState);
+    	break;
+    }
+
+    case int(TargetActId::TELEPORT_TO_BULLET):
+    {
+        interpretTeleportToBullet(chrInsPtr, hksState);
+        break;
+    }
+
+    case int(TaeActId::UPDATE_ROOT_MOTION_REDUCTION) :
+	    interpretTae(chrInsPtr, hksState);
+
     //ESD Functions
     case REPLACE_TOOL:
     {
@@ -565,3 +594,8 @@ static void hksSetCGlobalsHookFunc(HksState* hksState)
     hksSetCGlobals(hksState);
     newPushEnvActGlobalsFunc(hksState);
 }
+=======
+    newActFunc(chrInsPtr, actId, hksState);
+    hksAct(chrInsPtr, actId, hksState);
+}
+
