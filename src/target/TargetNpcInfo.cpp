@@ -207,8 +207,8 @@ int TargetNpcInfo::getHP(intptr_t target)
 std::vector<intptr_t> TargetNpcInfo::allLoadedCharacters(intptr_t processBase)
 {
 	int64_t WORLD_CHR_MAN = worldChrManAddress;
-	int CHR_ENTRY_LIST_START = 0x1F1B0;
-	int CHR_ENTRY_LIST_END = 0x1F1B8;
+	int CHR_ENTRY_LIST_START = 0x1F1D8;
+	int CHR_ENTRY_LIST_END = 0x1F1E0;
 
 	intptr_t charactersEnd = *(intptr_t*)(*(intptr_t*)WORLD_CHR_MAN + CHR_ENTRY_LIST_END);
 	intptr_t charactersStart = *(intptr_t*)(*(intptr_t*)WORLD_CHR_MAN + CHR_ENTRY_LIST_START);

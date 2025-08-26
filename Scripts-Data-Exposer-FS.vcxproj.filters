@@ -162,7 +162,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\PointerChain.h">
-=======
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="game\TargetHksParams.h">
       <Filter>Header Files</Filter>
     </ClInclude>

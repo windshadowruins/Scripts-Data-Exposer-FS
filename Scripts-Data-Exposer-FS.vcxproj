@@ -237,7 +237,6 @@
     <ClInclude Include="include\mem\utils.h" />
     <ClInclude Include="include\MinHook.h" />
     <ClInclude Include="include\PointerChain.h" />
-=======
     <ClInclude Include="include\target\TargetHksParams.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="include\common\CoordinatePointers.h" />

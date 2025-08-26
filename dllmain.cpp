@@ -19,33 +19,7 @@
 #pragma comment(lib, "libMinHook-x86-v141-md.lib")
 #endif
 
-#if _DEBUG
-#define DEBUG true
-#else
-#define DEBUG false
-#endif
-
-#if DEBUG
-static inline void printAddresses() 
-{
-    Logger::debug("---");
-    Logger::debug("Game: %p", getProcessBase());
-    Logger::debug("---");
-    Logger::debug("Addresses:");
-    for (auto const& [name, address] : registeredAddresses) 
-    {
-        Logger::debug("%s: %p", name, address);
-    }
-    Logger::debug("%s: %p", "newEnvFunc", newEnvFunc);
-    Logger::debug("%s: %p", "newActFunc", newActFunc);
-    Logger::debug("---");
-}
-#else
-static inline void printAddresses() {};
-#endif
-=======
 #define OPEN_CONSOLE_ON_START 1
-
 
 void* text;
 size_t text_size;
@@ -54,16 +28,15 @@ static void initAddresses()
 {
     GetText();
     ScanAndAssignAddresses();
-    printAddresses();
 }
 
 
-bool createHook(const char* name, LPVOID pTarget, LPVOID pDetour, LPVOID* ppOriginal)
+bool createHook(LPVOID pTarget, LPVOID pDetour, LPVOID* ppOriginal)
 {
     int mhStatus = MH_CreateHook(pTarget, pDetour, ppOriginal);
     if (mhStatus != MH_OK)
     {
-        Logger::log("MinHook CreateHook error creating hook \"%s\" (%d)", name, mhStatus);
+        Logger::log("MinHook CreateHook error creating hook (%d)", mhStatus);
         return false;
     }
     return true;
@@ -71,7 +44,8 @@ bool createHook(const char* name, LPVOID pTarget, LPVOID pDetour, LPVOID* ppOrig
 
 void initHooks() 
 {
-    createHook("hksSetCGlobals", replacedHksSetCGlobals, &hksSetCGlobalsHookFunc, (void**)&hksSetCGlobals);
+    createHook(replacedHksEnv, &envHookFunc, (void**)&hksEnv);
+    createHook(replacedHksAct, &actHookFunc, (void**)&hksAct);
 
     initRootMotionReductionHook();
     initTargetHook();
@@ -82,17 +56,15 @@ void initHooks()
 
 void onAttach()
 {
-    if (DEBUG && GetConsoleWindow() == NULL) 
-=======
     if (OPEN_CONSOLE_ON_START && GetConsoleWindow() == NULL && buildType == BuildType::DEBUG) 
     {
         AllocConsole();
         freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
-        Logger::debug("Created Scripts-Data-Exposer-FS Console");
+        Logger::log("Created Scripts-Data-Exposer-FS Console");
 
     }
 
-    Logger::debug("Start onAttach");
+    Logger::log("Start onAttach");
 
     initBase();
 
@@ -107,7 +79,7 @@ void onAttach()
 
     initHooks();
 
-    Logger::debug("Finished onAttach");
+    Logger::log("Finished onAttach");
 }
 
 void onDetach()

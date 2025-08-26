@@ -1,3 +1,75 @@
+--Teleport
+
+-- Teleport to target
+act(50000, 1)
+
+-- Teleport target to player
+act(50000, 2)
+
+-- Teleport target to player
+act(50000, 3)
+
+-- Teleport target to player
+act(50000, 3)
+
+-- set RootMotionReduction factor to 0.5
+act(50002, 500)
+
+-- Example code
+
+-- Speffect
+local MY_SPEFFECT_ID = 7000003
+
+-- C++ hook IDs. Do not change these.
+local TELEPORT_TO_TARGET_ACTION_ID = 50000
+local TARGET_INFO_ENV_ID = 50000
+local TARGET_X = 1
+local TARGET_Y = 2
+local TARGET_Z = 3
+
+----------------------------------------------------
+-- ## HELPER FUNCTION ##
+----------------------------------------------------
+-- This function gets the coordinates of your locked-on target.
+function GetTargetPosition()
+    -- Use the C++ hook to get the coordinate data directly.
+    local x = env(TARGET_INFO_ENV_ID, TARGET_X)
+    local y = env(TARGET_INFO_ENV_ID, TARGET_Y)
+    local z = env(TARGET_INFO_ENV_ID, TARGET_Z)
+
+    return { x = x, y = y, z = z }
+end
+
+-- This flag prevents the teleport from triggering repeatedly.
+local IS_TELEPORTING = false
+
+-- A helper function to check if your specific special effect is currently active on the player.
+function IsMySpEffectActive()
+    return TRUE == env(GetSpEffectID, MY_SPEFFECT_ID)
+end
+
+-- This is the main function you will call in your game's script loop. This will go into function update as CheckAndTeleport()
+function CheckAndTeleport()
+    -- If the special effect is active AND we haven't teleported yet
+    if (IsMySpEffectActive() and not IS_TELEPORTING) then
+        
+        local targetPosition = GetTargetPosition()
+        
+        -- Only teleport if the target position is valid (not 0,0,0).
+        if targetPosition.x ~= 0 or targetPosition.y ~= 0 or targetPosition.z ~= 0 then
+            IS_TELEPORTING = true
+            act(TELEPORT_TO_TARGET_ACTION_ID, 1, targetPosition.x, targetPosition.y, targetPosition.z)
+        end
+        
+    -- If the special effect is NOT active...
+    elseif (not IsMySpEffectActive()) then
+        -- Reset the flag so you can teleport again the next time you activate the effect.
+        IS_TELEPORTING = false
+    end
+end
+
+
+
 ------------------------------------------
 --Custom Envs from Scripts-Data-Exposer
 ------------------------------------------
@@ -424,5 +496,3 @@ end
 function IntBitsToFloat(val)
     return val
 end
-=======
-

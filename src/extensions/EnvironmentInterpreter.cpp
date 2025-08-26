@@ -25,3 +25,4 @@ int interpretEnv(void** chrInsPtr, HksState* hksState)
     if (coordinate == mem::prot_flags::INVALID) return coordinate;
     return *((intptr_t*)&coordinate) & 0xFFFFFFFF;
 }
+

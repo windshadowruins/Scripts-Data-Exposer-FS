@@ -9,17 +9,6 @@ namespace Logger
         std::printf(str.append("\n").c_str(), args ...);
     }
 
-#if _DEBUG
-    template<typename ... Args> static inline void debug(std::string str, Args ... args)
-    {
-        std::printf(str.append("\n").c_str(), args ...);
-    }
-#else
-    template<typename ... Args> static inline void debug(std::string str, Args ... args)
-    {
-    }
-#endif
-=======
     static inline std::string asString(LogLevel logLevel)
     {
         if (logLevel == LogLevel::INFO) return "INFO";
