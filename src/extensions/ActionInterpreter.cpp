@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 
+#include <algorithm>
 #include "../game/ProcessStructs.h"
 #include "common/CoordinatePointers.h"
 #include "world/WorldInfo.h"
@@ -31,5 +32,6 @@ void interpretTae(void** chrInsPtr, HksState* hksState)
 {
     if (!hksHasParamInt(hksState, 2)) return;
     float rootMotionReductionFactor = hks_luaL_checkint(hksState, 2) / 1000.0f;
+    rootMotionReductionFactor = std::max(0.0f, std::min(1.0f, rootMotionReductionFactor));
     taeEditor->updateRootMotion(rootMotionReductionFactor);
 }
